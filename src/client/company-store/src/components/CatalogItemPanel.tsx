@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button';
-import { Panel } from 'office-ui-fabric-react/lib/Panel';
+import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { useBoolean } from '@uifabric/react-hooks';
 import { ICatalogItem } from '../models/ICatalogItem';
 import { IAudienceType } from '../models/IAudienceType';
@@ -43,13 +43,15 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
         closeButtonAriaLabel="Close"
         onRenderFooterContent={onRenderFooterContent}
         isFooterAtBottom={true}
+        type={PanelType.medium}
       >
-        <TextField label="Title" value={props.item ? props.item.title : ''} />
-        <TextField label="Company" value={props.item ? props.item.company : ''} />
-        <TextField label="Category" value={props.item ? props.item.category : ''} />
-
+        <TextField label="Title" defaultValue={props.item ? props.item.title : ''} />
+        <TextField label="Company" defaultValue={props.item ? props.item.company : ''} />
+        <TextField label="Category" defaultValue={props.item ? props.item.category : ''} />
+        <TextField label="Price" type="number" defaultValue={props.item ? props.item?.price?.toString() : ''} />
         <TextField label="Description" value={props.item ? props.item.description : ''} multiline rows={10} />
-        {props.item ? <b>{props.item.title}</b> : <b>New Item</b>}
+        <TextField label="Thumbnail" defaultValue={props.item ? props.item.thumbnailUrl : ''} />
+        <TextField label="Url" defaultValue={props.item ? props.item.url : ''} />
       </Panel>
     </div>
   );
