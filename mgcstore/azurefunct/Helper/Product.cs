@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json;
 
 namespace azurefunct.Helper
@@ -24,5 +25,10 @@ namespace azurefunct.Helper
         public string Url { get; set; }
         [JsonProperty("audience")]
         public List<Audience> Audience { get; set; }
+
+        public static implicit operator Product(FeedResponse<Product> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
