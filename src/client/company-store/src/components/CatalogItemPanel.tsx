@@ -6,6 +6,9 @@ import { ICatalogItem } from '../models/ICatalogItem';
 import { IAudienceType } from '../models/IAudienceType';
 import { isTemplateTail } from 'typescript';
 import { TextField } from '@fluentui/react';
+import { createItem, updateItem } from '../services/CatalogService';
+import { catalogItemsState } from '../state/catalogItemsState';
+import { useRecoilState } from 'recoil';
 
 const buttonStyles = { root: { marginRight: 8 } };
 
@@ -16,42 +19,73 @@ export interface INewItemPanelProps {
 
 export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (props: INewItemPanelProps) => {
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(true);
+  const [{}, setCatalogItems] = useRecoilState(catalogItemsState);
+
+  const initialState: ICatalogItem = props.item ? props.item : ({} as ICatalogItem);
+  const [data, setData] = React.useState<ICatalogItem>(initialState);
+  const handleInputChange = (event: any) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const onRenderFooterContent = React.useCallback(
     () => (
       <div>
-        <PrimaryButton onClick={onDismiss} styles={buttonStyles}>
-          Save
+        <PrimaryButton onClick={() => onSave(data)} styles={buttonStyles}>
+          {props.item ? 'Save' : 'Create'}
         </PrimaryButton>
-        <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
+        <DefaultButton onClick={dismissPanel}>Cancel</DefaultButton>
       </div>
     ),
-    [dismissPanel]
+    [dismissPanel, data]
   );
 
-  const onDismiss = React.useCallback(() => {
-    dismissPanel();
-    props.onDismiss();
-  }, [dismissPanel]);
+  const onSave = React.useCallback(
+    async (data: ICatalogItem) => {
+      if (props.item) {
+      } else {
+        //const newItem = await createItem(data);
+        setCatalogItems((catalogItems) => catalogItems.concat(data));
+      }
+
+      dismissPanel();
+    },
+    [dismissPanel]
+  );
 
   return (
     <div>
       <Panel
         isOpen={isOpen}
-        onDismiss={onDismiss}
-        headerText="Edit Catalog Item"
+        onDismiss={dismissPanel}
+        headerText={props.item ? 'Edit the catalog item' : 'Create a new catalog item'}
         closeButtonAriaLabel="Close"
         onRenderFooterContent={onRenderFooterContent}
         isFooterAtBottom={true}
         type={PanelType.medium}
       >
-        <TextField label="Title" defaultValue={props.item ? props.item.title : ''} />
-        <TextField label="Company" defaultValue={props.item ? props.item.company : ''} />
-        <TextField label="Category" defaultValue={props.item ? props.item.category : ''} />
-        <TextField label="Price" type="number" defaultValue={props.item ? props.item?.price?.toString() : ''} />
-        <TextField label="Description" value={props.item ? props.item.description : ''} multiline rows={10} />
-        <TextField label="Thumbnail" defaultValue={props.item ? props.item.thumbnailUrl : ''} />
-        <TextField label="Url" defaultValue={props.item ? props.item.url : ''} />
+        <TextField label="Title" name="title" value={data.title} onChange={handleInputChange} />
+        <TextField label="Company" name="company" value={data.company} onChange={handleInputChange} />
+        <TextField label="Category" name="category" value={data.category} onChange={handleInputChange} />
+        <TextField
+          label="Price"
+          name="price"
+          type="number"
+          value={data.price?.toString()}
+          onChange={handleInputChange}
+        />
+        <TextField
+          label="Description"
+          name="description"
+          multiline
+          rows={10}
+          value={data.description}
+          onChange={handleInputChange}
+        />
+        <TextField label="Thumbnail" name="thumbnailUrl" value={data.thumbnailUrl} onChange={handleInputChange} />
+        <TextField label="Url" name="url" value={data.url} onChange={handleInputChange} />
       </Panel>
     </div>
   );

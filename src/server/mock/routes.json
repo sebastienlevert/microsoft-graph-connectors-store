@@ -1,0 +1,6 @@
+{
+    "/GetAllProducts": "/items",
+    "/DeleteProduct": "/items",
+    "/AddProduct": "/items",
+    "/EditProduct": "/items"
+  }

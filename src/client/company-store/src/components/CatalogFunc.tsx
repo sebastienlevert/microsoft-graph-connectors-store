@@ -15,6 +15,9 @@ import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 import { ICatalogItem } from '../models/ICatalogItem';
 import { getItems } from '../services/CatalogService';
 import { Image, ImageFit } from 'office-ui-fabric-react/lib/Image';
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { itemState } from '../state/itemState';
+import { catalogItemsState, getCatalogItems } from '../state/catalogItemsState';
 
 const classNames = mergeStyleSets({
   fileIconHeaderIcon: {
@@ -63,17 +66,16 @@ export interface ICatalogState {
 }
 
 export interface ICatalogProps {
-  onItemSelected(item: ICatalogItem): void;
   onItemInvoked(): void;
 }
 
-export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
-  private _selection: Selection;
+export const CatalogFunc: React.FunctionComponent<ICatalogProps> = (props: ICatalogProps) => {
+  const [items, setItems] = useRecoilState(catalogItemsState);
+  const [item, setItem] = useRecoilState(itemState);
+  const [columns, setColumns] = React.useState<IColumn[]>([]);
 
-  constructor(props: ICatalogProps) {
-    super(props);
-
-    const columns: IColumn[] = [
+  React.useEffect(() => {
+    setColumns([
       {
         key: 'columnTitle',
         name: 'Title',
@@ -83,10 +85,9 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
         isRowHeader: true,
         isResizable: true,
         isSorted: true,
-        isSortedDescending: false,
         sortAscendingAriaLabel: 'Sorted A to Z',
         sortDescendingAriaLabel: 'Sorted Z to A',
-        onColumnClick: this._onColumnClick,
+        onColumnClick: _onColumnClick,
         data: 'string',
         isPadded: true,
       },
@@ -97,7 +98,7 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
         minWidth: 70,
         maxWidth: 150,
         isResizable: true,
-        onColumnClick: this._onColumnClick,
+        onColumnClick: _onColumnClick,
         data: 'string',
         isPadded: true,
       },
@@ -110,7 +111,7 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
         isResizable: true,
         isCollapsible: true,
         data: 'string',
-        onColumnClick: this._onColumnClick,
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
       {
@@ -122,7 +123,7 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
         isResizable: true,
         isCollapsible: true,
         data: 'string',
-        onColumnClick: this._onColumnClick,
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
       {
@@ -134,7 +135,7 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
         isResizable: true,
         isCollapsible: true,
         data: 'string',
-        onColumnClick: this._onColumnClick,
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
       {
@@ -146,64 +147,40 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
         isResizable: false,
         isCollapsible: false,
         data: 'string',
-        onColumnClick: this._onColumnClick,
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
-    ];
+    ]);
+  }, [items]);
 
-    this._selection = new Selection({
-      onSelectionChanged: () => {
-        const currentSelection = this._getSelection();
-        this.props.onItemSelected(currentSelection);
-      },
-    });
+  const _onColumnClick = React.useCallback(
+    (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
+      const newColumns: IColumn[] = columns.slice();
+      const currColumn: IColumn = newColumns.filter((currCol) => column.key === currCol.key)[0];
+      newColumns.forEach((newCol: IColumn) => {
+        if (newCol === currColumn) {
+          currColumn.isSortedDescending = !currColumn.isSortedDescending;
+          currColumn.isSorted = true;
+        } else {
+          newCol.isSorted = false;
+          newCol.isSortedDescending = true;
+        }
+        newCol.onColumnClick = _onColumnClick;
+      });
+      const newItems = _copyAndSort<ICatalogItem>(items, currColumn.fieldName!, currColumn.isSortedDescending);
+      setItems(newItems);
+      setColumns(newColumns);
+    },
+    [items]
+  );
 
-    this.state = {
-      items: [],
-      columns: columns,
-      isModalSelection: false,
-      isCompactMode: false,
-      announcedMessage: undefined,
-    };
-  }
+  const selection = new Selection({
+    onSelectionChanged: () => {
+      setItem(selection.getSelection()[0] as ICatalogItem);
+    },
+  });
 
-  public componentDidMount() {
-    this._loadCatalogItems();
-  }
-
-  public render() {
-    const { columns, items } = this.state;
-
-    return (
-      <Fabric>
-        <MarqueeSelection selection={this._selection}>
-          <DetailsList
-            items={items}
-            columns={columns}
-            selectionMode={SelectionMode.single}
-            getKey={this._getKey}
-            setKey="multiple"
-            onRenderItemColumn={this._renderItemColumn}
-            layoutMode={DetailsListLayoutMode.justified}
-            isHeaderVisible={true}
-            selection={this._selection}
-            selectionPreservedOnEmptyClick={true}
-            onItemInvoked={(item: ICatalogItem) => {
-              //setItem(item);
-              this.props.onItemSelected(item);
-              this.props.onItemInvoked();
-            }}
-            enterModalSelectionOnTouch={true}
-            ariaLabelForSelectionColumn="Toggle selection"
-            ariaLabelForSelectAllCheckbox="Toggle selection for all items"
-            checkButtonAriaLabel="select row"
-          />
-        </MarqueeSelection>
-      </Fabric>
-    );
-  }
-
-  private _renderItemColumn(item: ICatalogItem, index: number | undefined, column: IColumn | undefined) {
+  const _renderItemColumn = (item: ICatalogItem, index: number | undefined, column: IColumn | undefined) => {
     const fieldContent = item[column?.fieldName as keyof ICatalogItem] as string;
 
     switch (column?.key) {
@@ -216,56 +193,41 @@ export class Catalog extends React.Component<ICatalogProps, ICatalogState> {
       default:
         return <span>{fieldContent}</span>;
     }
-  }
-
-  public componentDidUpdate(previousProps: any, previousState: ICatalogState) {
-    if (previousState.isModalSelection !== this.state.isModalSelection && !this.state.isModalSelection) {
-      this._selection.setAllSelected(false);
-    }
-  }
-
-  private _getKey(item: any, index?: number): string {
-    return item.key;
-  }
-
-  private _getSelection(): ICatalogItem {
-    return this._selection.getSelection()[0] as ICatalogItem;
-  }
-
-  private _onColumnClick = (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
-    const { columns, items } = this.state;
-    const newColumns: IColumn[] = columns.slice();
-    const currColumn: IColumn = newColumns.filter((currCol) => column.key === currCol.key)[0];
-    newColumns.forEach((newCol: IColumn) => {
-      if (newCol === currColumn) {
-        currColumn.isSortedDescending = !currColumn.isSortedDescending;
-        currColumn.isSorted = true;
-        this.setState({
-          announcedMessage: `${currColumn.name} is sorted ${
-            currColumn.isSortedDescending ? 'descending' : 'ascending'
-          }`,
-        });
-      } else {
-        newCol.isSorted = false;
-        newCol.isSortedDescending = true;
-      }
-    });
-    const newItems = this._copyAndSort(items, currColumn.fieldName!, currColumn.isSortedDescending);
-    this.setState({
-      columns: newColumns,
-      items: newItems,
-    });
   };
 
-  private _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] {
+  const _getKey = (item: any, index?: number): string => {
+    return item.key;
+  };
+
+  const _copyAndSort = <T,>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] => {
     const key = columnKey as keyof T;
     return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
-  }
+  };
 
-  private async _loadCatalogItems(): Promise<void> {
-    const items: ICatalogItem[] = await getItems();
-    this.setState({
-      items: items,
-    });
-  }
-}
+  return (
+    <Fabric>
+      {items && (
+        <DetailsList
+          items={items}
+          columns={columns}
+          selectionMode={SelectionMode.single}
+          getKey={_getKey}
+          onRenderItemColumn={_renderItemColumn}
+          layoutMode={DetailsListLayoutMode.justified}
+          isHeaderVisible={true}
+          selectionPreservedOnEmptyClick={true}
+          selection={selection}
+          onItemInvoked={(item: ICatalogItem) => {
+            setItem(item);
+            //this.props.onItemSelected(item);
+            //this.props.onItemInvoked();
+          }}
+          enterModalSelectionOnTouch={true}
+          ariaLabelForSelectionColumn="Toggle selection"
+          ariaLabelForSelectAllCheckbox="Toggle selection for all items"
+          checkButtonAriaLabel="select row"
+        />
+      )}
+    </Fabric>
+  );
+};

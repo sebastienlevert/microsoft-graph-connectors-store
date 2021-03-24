@@ -4,6 +4,8 @@ import { useBoolean } from '@uifabric/react-hooks';
 import { CatalogItemPanel } from './CatalogItemPanel';
 import { ICatalogItem } from '../models/ICatalogItem';
 import { deleteItem } from '../services/CatalogService';
+import { itemState } from '../state/itemState';
+import { useRecoilState } from 'recoil';
 
 export interface IHeaderProps {
   item?: ICatalogItem;
@@ -11,6 +13,7 @@ export interface IHeaderProps {
 
 export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProps) => {
   const [newItemPanelVisible, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
+  const [item] = useRecoilState(itemState);
 
   const _items: ICommandBarItemProps[] = [
     {
@@ -31,7 +34,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
       text: 'Delete',
       iconProps: { iconName: 'Delete' },
       disabled: props.item ? false : true,
-      onClick: () => deleteItem(props.item),
+      onClick: () => deleteItem(item),
     },
   ];
   const _farItems: ICommandBarItemProps[] = [
@@ -52,7 +55,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         farItems={_farItems}
         ariaLabel="Use left and right arrow keys to navigate between commands"
       />
-      {newItemPanelVisible && <CatalogItemPanel onDismiss={dismissPanel} item={props.item} />}
+      {newItemPanelVisible && <CatalogItemPanel onDismiss={dismissPanel} item={item} />}
     </div>
   );
 };
