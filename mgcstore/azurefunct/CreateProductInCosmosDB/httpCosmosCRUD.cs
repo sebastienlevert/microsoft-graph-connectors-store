@@ -7,6 +7,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using azurefunct.Helper;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,27 +100,39 @@ namespace azurefunct.CreateProductInCosmosDB
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             Product input = JsonConvert.DeserializeObject<Product>(requestBody);
             var sqlQuery = $"SELECT * FROM a WHERE a.id = '{input.Id}'";
-            var iterator0 = container.GetItemQueryIterator<Product>(sqlQuery);
-            Product docReturned = await iterator0.ReadNextAsync();
-           // Product docReturned = JsonConvert.DeserializeObject<Product>(payload);
-
-            if (docReturned != null)
+            try
             {
-                docReturned.Title = input.Title;
-                docReturned.ThumbnailUrl = input.ThumbnailUrl;
-                docReturned.Company = input.Company;
-                docReturned.Category = input.Category;
-                docReturned.Description = input.Description;
-                docReturned.Price = input.Price;
-                docReturned.Url = input.Url;
-                docReturned.Audience = input.Audience;
-                var result = await container.ReplaceItemAsync<Product>(docReturned, (string)docReturned.Id);
-                var updatedDoc = result.Resource;
-                log.LogInformation($"Updated Product: {updatedDoc.Title} from Sebs React Component");
+                ItemResponse<Product> currProd = await container.ReadItemAsync<Product>(input.Id, new PartitionKey(input.Title));
+                log.LogInformation($"Found Product to upate: {currProd.ToString()}");
+                Product foundItem = currProd.Resource;
+                if (currProd != null)
+                {
+                    foundItem.Title = input.Title;
+                    foundItem.ThumbnailUrl = input.ThumbnailUrl;
+                    foundItem.Company = input.Company;
+                    foundItem.Category = input.Category;
+                    foundItem.Description = input.Description;
+                    foundItem.Price = input.Price;
+                    foundItem.Url = input.Url;
+                    foundItem.Audience = input.Audience;
+                    var result = await container.ReplaceItemAsync<Product>(foundItem,foundItem.Id.ToString());
+                    //var updatedDoc = result.Resource;
+                    //log.LogInformation($"Updated Product: {updatedDoc.Title} from Sebs React Component");
+                }
+                return new OkObjectResult(foundItem);
+            }
+            catch(CosmosException ex)
+            {
+                log.LogInformation($"Error Thrown: {ex.Message.ToString()}");
+                //ItemResponse<Product> currProd = await container.CreateItemAsync<Product>(input, new PartitionKey(input.Title));
+                //log.LogInformation($"Created New Item in Database: {currProd.ToString()}");
+                return new BadRequestResult();
             }
 
-            return new OkResult();
+            //return new OkResult();
+            //return new OkObjectResult(payload);
         }
+
 
         //Find Product using StartsWith
         [FunctionName("GetProductUsingStartsWith")]
