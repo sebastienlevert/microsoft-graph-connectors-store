@@ -22,7 +22,7 @@ namespace azurefunct
             ConnectionStringSetting = "mgcstoreCosmosDBConn",
             LeaseCollectionName = "leases",
             CreateLeaseCollectionIfNotExists = true)]IReadOnlyList<Document> input, ILogger log,
-            [Queue("mgcstoreproduct", Connection = "AzureWebJobsStorage")] IAsyncCollector<string> outputQueue,
+            [Queue("mgcstoreproduct", Connection = "AzureWebJobsStorage")] IAsyncCollector<archiveProduct> outputQueue,
             [Table("mgcstoreproduct", Connection = "AzureWebJobsStorage")] IAsyncCollector<archiveProduct> outputTable)
         {
             //[Table("mgcstoreproduct", Connection = "AzureWebJobsStorage")] IAsyncCollector<string> outputTable
@@ -30,10 +30,11 @@ namespace azurefunct
             if (input != null && input.Count > 0)
             {
 
-                prd.Add(new archiveProduct()
+                var tempItem = new archiveProduct()
                 {
                     PartitionKey = "MGCProducts",
                     RowKey = input[0].Id,
+                    Id = input[0].GetPropertyValue<string>("id"),
                     Title = input[0].GetPropertyValue<string>("title"),
                     ThumbnailUrl = input[0].GetPropertyValue<string>("thumbnailUrl"),
                     Company = input[0].GetPropertyValue<string>("company"),
@@ -41,24 +42,12 @@ namespace azurefunct
                     Description = input[0].GetPropertyValue<string>("description"),
                     Price = Convert.ToDouble(input[0].GetPropertyValue<string>("price")),
                     Url = input[0].GetPropertyValue<string>("url")
-                });
-
-                
-                var data = JsonConvert.SerializeObject(prd);
-
-                
-                var rmvsqrbrakcket = data.Replace("[{", "{").Replace("}]", "}");
-                var tabledata = JsonConvert.DeserializeObject<archiveProduct>(rmvsqrbrakcket);
-                    tabledata.PartitionKey = "MGCProducts";
-                    tabledata.RowKey = input[0].Id;
-
-                
+                };
 
                 //write to Azure Queue
-                await outputQueue.AddAsync(data);
-                //await outputQueue.AddAsync(data);
+                await outputQueue.AddAsync(tempItem);
                 //now write to Azure Table Storage
-                await outputTable.AddAsync(tabledata);
+                await outputTable.AddAsync(tempItem);
                 log.LogInformation("Documents modified " + input.Count);
                 //log.LogInformation("First document Id " + input[0].Id + " with Product Name " + input[0].Title);
             }
