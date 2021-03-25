@@ -6,6 +6,8 @@ import { ICatalogItem } from '../models/ICatalogItem';
 import { itemState } from '../state/itemState';
 import { useRecoilState } from 'recoil';
 import { DeleteItemDialog } from './DeleteItemDialog';
+import { SearchBox } from '@fluentui/react';
+import { Login } from '@microsoft/mgt-react';
 
 export interface IHeaderProps {
   item?: ICatalogItem;
@@ -16,10 +18,9 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
   const [deleteDialogIsOpen, { setTrue: openDeleteDialog, setFalse: dismissDeleteDialog }] = useBoolean(false);
   const [isNew, setIsNew] = React.useState<boolean>(false);
   const [item] = useRecoilState(itemState);
-  const [commandBarItems, setCommandBarItems] = React.useState<ICommandBarItemProps[]>([]);
 
-  React.useEffect(() => {
-    setCommandBarItems([
+  const commandBarItems = React.useMemo(
+    (): ICommandBarItemProps[] => [
       {
         key: 'newItem',
         text: 'New',
@@ -33,7 +34,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         key: 'editItem',
         text: 'Edit',
         iconProps: { iconName: 'Edit' },
-        disabled: props.item ? false : true,
+        disabled: item ? false : true,
         onClick: () => {
           setIsNew(false);
           openPanel();
@@ -43,20 +44,40 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         key: 'deleteItem',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
-        disabled: props.item ? false : true,
+        disabled: item ? false : true,
         onClick: openDeleteDialog,
       },
-    ]);
-  }, [openDeleteDialog, props.item, openPanel]);
+      {
+        key: 'buyItem',
+        text: 'Buy',
+        iconProps: { iconName: 'ShoppingCart' },
+        disabled: item ? false : true,
+        onClick: () => {
+          window.open(item?.url, '_blank');
+        },
+      },
+    ],
+    [item, openPanel, openDeleteDialog, setIsNew]
+  );
 
   const _farItems: ICommandBarItemProps[] = [
     {
-      key: 'info',
-      text: 'Info',
-      ariaLabel: 'Info',
-      iconOnly: true,
-      iconProps: { iconName: 'Info' },
-      onClick: () => console.log('Info'),
+      key: 'search',
+      onRender: () => (
+        <SearchBox
+          placeholder="Search"
+          className="searchBox"
+          styles={{
+            root: {
+              width: '220px',
+            },
+          }}
+        />
+      ),
+    },
+    {
+      key: 'login',
+      onRender: () => <Login />,
     },
   ];
 

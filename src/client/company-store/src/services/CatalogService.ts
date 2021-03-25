@@ -1,8 +1,19 @@
 import { ICatalogItem } from '../models/ICatalogItem';
-import { httpPost, httpPut, httpDelete } from './fetch';
+import { httpPost, httpPut, httpDelete, httpGet } from './fetch';
 
-export function getItems(): Promise<ICatalogItem[]> {
-  return fetch(`${process.env.REACT_APP_API_BASE_URL}/GetAllProducts`).then((response) => response.json());
+export async function getItems(title?: string): Promise<ICatalogItem[]> {
+  if (title) {
+    return await httpPost<{ title: string }, ICatalogItem[]>(
+      `${process.env.REACT_APP_API_BASE_URL}/GetProductUsingStartsWith`,
+      { title: title }
+    );
+  } else {
+    return await httpGet<ICatalogItem[]>(`${process.env.REACT_APP_API_BASE_URL}/GetAllProducts`);
+  }
+}
+
+export function getExternalItems(title: string): Promise<ICatalogItem[]> {
+  return getItems(title);
 }
 
 export function getItem(id: string) {

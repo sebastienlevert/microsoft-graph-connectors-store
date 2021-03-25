@@ -10,26 +10,44 @@ import {
 import { ICatalogItem } from '../models/ICatalogItem';
 import { Image, ImageFit } from 'office-ui-fabric-react/lib/Image';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { itemState } from '../state/itemState';
-import { catalogItemsState } from '../state/catalogItemsState';
-export interface ICatalogState {
+import { externalItemsState } from '../state/externalItemsState';
+
+export interface ISearchResultsState {
   columns: IColumn[];
   items: ICatalogItem[];
-  isModalSelection?: boolean;
-  isCompactMode?: boolean;
-  announcedMessage?: string;
 }
 
-export interface ICatalogProps {
-  onItemInvoked(): void;
+export interface ISearchResultsProps {
+  query?: string;
 }
 
-export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogProps) => {
-  const [items, setItems] = useRecoilState(catalogItemsState);
-  const setItem = useSetRecoilState(itemState);
+export const SearchResults: React.FunctionComponent<ISearchResultsProps> = (props: ISearchResultsProps) => {
+  const [items, setItems] = useRecoilState(externalItemsState);
+  const [columns, setColumns] = React.useState<IColumn[]>([]);
 
-  const columns = React.useMemo(
-    (): IColumn[] => [
+  const _onColumnClick = React.useCallback(
+    (ev: React.MouseEvent<HTMLElement>, column: IColumn): void => {
+      const newColumns: IColumn[] = columns.slice();
+      const currColumn: IColumn = newColumns.filter((currCol) => column.key === currCol.key)[0];
+      newColumns.forEach((newCol: IColumn) => {
+        if (newCol === currColumn) {
+          currColumn.isSortedDescending = !currColumn.isSortedDescending;
+          currColumn.isSorted = true;
+        } else {
+          newCol.isSorted = false;
+          newCol.isSortedDescending = true;
+        }
+        newCol.onColumnClick = _onColumnClick;
+      });
+      const newItems = _copyAndSort<ICatalogItem>(items, currColumn.fieldName!, currColumn.isSortedDescending);
+      setItems(newItems);
+      setColumns(newColumns);
+    },
+    [items, columns, setItems]
+  );
+
+  React.useEffect(() => {
+    setColumns([
       {
         key: 'columnTitle',
         name: 'Title',
@@ -39,9 +57,9 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         isRowHeader: true,
         isResizable: true,
         isSorted: true,
-        isSortedDescending: true,
         sortAscendingAriaLabel: 'Sorted A to Z',
         sortDescendingAriaLabel: 'Sorted Z to A',
+        onColumnClick: _onColumnClick,
         data: 'string',
         isPadded: true,
       },
@@ -52,6 +70,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         minWidth: 70,
         maxWidth: 100,
         isResizable: true,
+        onColumnClick: _onColumnClick,
         data: 'string',
         isPadded: true,
       },
@@ -64,6 +83,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         isResizable: true,
         isCollapsible: true,
         data: 'string',
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
       {
@@ -75,6 +95,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         isResizable: true,
         isCollapsible: true,
         data: 'string',
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
       {
@@ -86,6 +107,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         isResizable: true,
         isCollapsible: true,
         data: 'string',
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
       {
@@ -97,17 +119,11 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         isResizable: false,
         isCollapsible: false,
         data: 'string',
+        onColumnClick: _onColumnClick,
         isPadded: true,
       },
-    ],
-    [items]
-  );
-
-  const selection = new Selection({
-    onSelectionChanged: () => {
-      setItem(selection.getSelection()[0] as ICatalogItem);
-    },
-  });
+    ]);
+  }, [items, _onColumnClick]);
 
   const _renderItemColumn = (item: ICatalogItem, index: number | undefined, column: IColumn | undefined) => {
     const fieldContent = item[column?.fieldName as keyof ICatalogItem] as string;
@@ -139,21 +155,11 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         <DetailsList
           items={items}
           columns={columns}
-          selectionMode={SelectionMode.single}
+          selectionMode={SelectionMode.none}
           getKey={_getKey}
           onRenderItemColumn={_renderItemColumn}
           layoutMode={DetailsListLayoutMode.justified}
           isHeaderVisible={true}
-          selectionPreservedOnEmptyClick={true}
-          selection={selection}
-          onItemInvoked={(item: ICatalogItem) => {
-            setItem(item);
-            window.open(item.url, '_blank');
-          }}
-          enterModalSelectionOnTouch={true}
-          ariaLabelForSelectionColumn="Toggle selection"
-          ariaLabelForSelectAllCheckbox="Toggle selection for all items"
-          checkButtonAriaLabel="select row"
         />
       )}
     </Fabric>
