@@ -82,11 +82,11 @@ namespace azurefunct.CreateProductInCosmosDB
 
             if (input != null)
             {
-                await container.CreateItemAsync(input, new PartitionKey(input.Title));
+                await container.CreateItemAsync(input, new PartitionKey(input.Id));
                 log.LogInformation("Entry into the Insert New Product Function has occured...");
             }
             log.LogInformation($"Created new Product {input.Title} from Sebs React Component");
-            return new OkResult();
+            return new OkObjectResult(input);
         }
 
 
@@ -102,7 +102,7 @@ namespace azurefunct.CreateProductInCosmosDB
             var sqlQuery = $"SELECT * FROM a WHERE a.id = '{input.Id}'";
             try
             {
-                ItemResponse<Product> currProd = await container.ReadItemAsync<Product>(input.Id, new PartitionKey(input.Title));
+                ItemResponse<Product> currProd = await container.ReadItemAsync<Product>(input.Id, new PartitionKey(input.Id));
                 log.LogInformation($"Found Product to upate: {currProd.ToString()}");
                 Product foundItem = currProd.Resource;
                 if (currProd != null)
@@ -180,8 +180,8 @@ namespace azurefunct.CreateProductInCosmosDB
             var doctodelete = await iterator2.ReadNextAsync();
 
                     string id = input.Id;
-                    string pk = input.Title;
-                    await container.DeleteItemAsync<Product>(id, new PartitionKey(pk));
+                    string pk = input.Id;
+                    await container.DeleteItemAsync<Product>(id, new PartitionKey(id));
             //log.LogInformation($"Created new Product {input.Title} from Sebs React Component");
             return new OkResult();
         }
