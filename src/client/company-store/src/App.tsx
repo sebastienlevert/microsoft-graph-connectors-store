@@ -1,44 +1,42 @@
 import React from 'react';
 import './App.css';
-import { Header } from './components/Header';
 import { initializeIcons } from '@uifabric/icons';
-import { Catalog } from './components/Catalog';
-import { ICatalogItem } from './models/ICatalogItem';
-import { CatalogItemPanel } from './components/CatalogItemPanel';
-import { useBoolean } from '@uifabric/react-hooks';
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import { CatalogFunc } from './components/CatalogFunc';
-import { Loading } from './components/Loading';
-import { itemState } from './state/itemState';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { catalogItemsState, getCatalogItems } from './state/catalogItemsState';
+import { IPivotStyleProps, IPivotStyles, IStyleFunctionOrObject, Pivot, PivotItem } from '@fluentui/react';
+import { AdminPage } from './pages/AdminPage';
+import * as microsoftTeams from '@microsoft/teams-js';
+import { Providers, TeamsProvider } from '@microsoft/mgt';
+import { Login } from '@microsoft/mgt-react';
+
+/*TeamsProvider.microsoftTeamsLib = microsoftTeams;
+Providers.globalProvider = new TeamsProvider({
+  clientId: process.env.REACT_APP_CLIENT_ID!,
+  authPopupUrl: '/auth.html',
+  scopes: ['User.Read.All'],
+});*/
 initializeIcons();
 
 export const App: React.FunctionComponent = () => {
-  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel, toggle: togglePanel }] = useBoolean(false);
-  const [currentItem, setCurrentItem] = useRecoilState(itemState);
   const catalogItems = useRecoilValue(getCatalogItems);
   const [items, setItems] = useRecoilState(catalogItemsState);
-  //const [item, setItem] = useRecoilState(itemState);
-
-  const onDismissPanel = React.useCallback(() => {
-    dismissPanel();
-  }, [dismissPanel]);
 
   React.useEffect(() => {
     setItems(catalogItems);
   }, ['']);
 
+  const pivotStyles: IStyleFunctionOrObject<IPivotStyleProps, IPivotStyles> = { itemContainer: { paddingTop: '10px' } };
   return (
     <>
-      <Header item={currentItem} />
-      <React.Suspense fallback={<Loading />}>
-        <CatalogFunc onItemInvoked={openPanel}></CatalogFunc>
-      </React.Suspense>
-      {isOpen && (
-        <div>
-          <CatalogItemPanel onDismiss={onDismissPanel} item={currentItem} />
-        </div>
-      )}
+      {/*<Login />*/}
+      <Pivot aria-label="Count and Icon Pivot Example" styles={pivotStyles}>
+        <PivotItem headerText="Search" itemCount={23} itemIcon="Search">
+          Pivot #2
+        </PivotItem>
+        <PivotItem headerText="Admin" itemCount={items.length} itemIcon="Settings">
+          <AdminPage></AdminPage>
+        </PivotItem>
+      </Pivot>
     </>
   );
 };

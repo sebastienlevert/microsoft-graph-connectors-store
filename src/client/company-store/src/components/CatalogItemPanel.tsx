@@ -15,13 +15,14 @@ const buttonStyles = { root: { marginRight: 8 } };
 export interface INewItemPanelProps {
   onDismiss(): void;
   item?: ICatalogItem;
+  isNew?: boolean;
 }
 
 export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (props: INewItemPanelProps) => {
   const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(true);
-  const [{}, setCatalogItems] = useRecoilState(catalogItemsState);
+  const [catalogItems, setCatalogItems] = useRecoilState(catalogItemsState);
 
-  const initialState: ICatalogItem = props.item ? props.item : ({} as ICatalogItem);
+  const initialState: ICatalogItem = props.isNew ? ({} as ICatalogItem) : props.item!;
   const [data, setData] = React.useState<ICatalogItem>(initialState);
   const handleInputChange = (event: any) => {
     setData({
@@ -36,7 +37,7 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
         <PrimaryButton onClick={() => onSave(data)} styles={buttonStyles}>
           {props.item ? 'Save' : 'Create'}
         </PrimaryButton>
-        <DefaultButton onClick={dismissPanel}>Cancel</DefaultButton>
+        <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
       </div>
     ),
     [dismissPanel, data]
@@ -45,21 +46,31 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
   const onSave = React.useCallback(
     async (data: ICatalogItem) => {
       if (props.item) {
+        const updatedItem = await updateItem(data);
+        const catalogItemIndex = catalogItems.findIndex((item) => item.id == updatedItem.id);
+        let tempCatalogItems = [...catalogItems];
+        tempCatalogItems[catalogItemIndex] = updatedItem;
+        setCatalogItems(tempCatalogItems);
       } else {
-        //const newItem = await createItem(data);
-        setCatalogItems((catalogItems) => catalogItems.concat(data));
+        const newItem = await createItem(data);
+        setCatalogItems((items) => items.concat(newItem));
       }
 
-      dismissPanel();
+      onDismiss();
     },
     [dismissPanel]
   );
+
+  const onDismiss = function () {
+    props.onDismiss();
+    dismissPanel();
+  };
 
   return (
     <div>
       <Panel
         isOpen={isOpen}
-        onDismiss={dismissPanel}
+        onDismiss={onDismiss}
         headerText={props.item ? 'Edit the catalog item' : 'Create a new catalog item'}
         closeButtonAriaLabel="Close"
         onRenderFooterContent={onRenderFooterContent}
