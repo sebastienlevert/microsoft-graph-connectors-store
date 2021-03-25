@@ -1,7 +1,7 @@
 import { IAudienceItem } from './IAudienceItem';
 
 export interface ICatalogItem {
-  id: string;
+  id?: string;
   title: string;
   thumbnailUrl: string;
   company: string;

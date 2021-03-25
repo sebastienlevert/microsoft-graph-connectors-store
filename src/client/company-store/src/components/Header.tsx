@@ -3,37 +3,52 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { useBoolean } from '@uifabric/react-hooks';
 import { CatalogItemPanel } from './CatalogItemPanel';
 import { ICatalogItem } from '../models/ICatalogItem';
-import { deleteItem } from '../services/CatalogService';
+import { itemState } from '../state/itemState';
+import { useRecoilState } from 'recoil';
+import { DeleteItemDialog } from './DeleteItemDialog';
 
 export interface IHeaderProps {
   item?: ICatalogItem;
 }
 
 export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProps) => {
-  const [newItemPanelVisible, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
+  const [panelIsOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
+  const [deleteDialogIsOpen, { setTrue: openDeleteDialog, setFalse: dismissDeleteDialog }] = useBoolean(false);
+  const [isNew, setIsNew] = React.useState<boolean>(false);
+  const [item] = useRecoilState(itemState);
+  const [commandBarItems, setCommandBarItems] = React.useState<ICommandBarItemProps[]>([]);
 
-  const _items: ICommandBarItemProps[] = [
-    {
-      key: 'newItem',
-      text: 'New',
-      iconProps: { iconName: 'Add' },
-      onClick: openPanel,
-    },
-    {
-      key: 'editItem',
-      text: 'Edit',
-      iconProps: { iconName: 'Edit' },
-      disabled: props.item ? false : true,
-      onClick: openPanel,
-    },
-    {
-      key: 'deleteItem',
-      text: 'Delete',
-      iconProps: { iconName: 'Delete' },
-      disabled: props.item ? false : true,
-      onClick: () => deleteItem(props.item),
-    },
-  ];
+  React.useEffect(() => {
+    setCommandBarItems([
+      {
+        key: 'newItem',
+        text: 'New',
+        iconProps: { iconName: 'Add' },
+        onClick: () => {
+          setIsNew(true);
+          openPanel();
+        },
+      },
+      {
+        key: 'editItem',
+        text: 'Edit',
+        iconProps: { iconName: 'Edit' },
+        disabled: props.item ? false : true,
+        onClick: () => {
+          setIsNew(false);
+          openPanel();
+        },
+      },
+      {
+        key: 'deleteItem',
+        text: 'Delete',
+        iconProps: { iconName: 'Delete' },
+        disabled: props.item ? false : true,
+        onClick: openDeleteDialog,
+      },
+    ]);
+  }, [openDeleteDialog, props.item, openPanel]);
+
   const _farItems: ICommandBarItemProps[] = [
     {
       key: 'info',
@@ -48,11 +63,12 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
   return (
     <div>
       <CommandBar
-        items={_items}
+        items={commandBarItems}
         farItems={_farItems}
         ariaLabel="Use left and right arrow keys to navigate between commands"
       />
-      {newItemPanelVisible && <CatalogItemPanel onDismiss={dismissPanel} item={props.item} />}
+      {panelIsOpen && <CatalogItemPanel onDismiss={dismissPanel} item={item} isNew={isNew} />}
+      {deleteDialogIsOpen && <DeleteItemDialog item={item} onDismiss={dismissDeleteDialog} />}
     </div>
   );
 };

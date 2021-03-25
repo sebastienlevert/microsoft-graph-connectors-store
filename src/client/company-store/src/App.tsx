@@ -1,36 +1,39 @@
 import React from 'react';
 import './App.css';
-import { Header } from './components/Header';
 import { initializeIcons } from '@uifabric/icons';
-import { Catalog } from './components/Catalog';
-import { ICatalogItem } from './models/ICatalogItem';
-import { CatalogItemPanel } from './components/CatalogItemPanel';
-import { useBoolean } from '@uifabric/react-hooks';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { catalogItemsState, getCatalogItems } from './state/catalogItemsState';
+import { IPivotStyleProps, IPivotStyles, IStyleFunctionOrObject, Pivot, PivotItem } from '@fluentui/react';
+import { AdminPage } from './pages/AdminPage';
+
+/*TeamsProvider.microsoftTeamsLib = microsoftTeams;
+Providers.globalProvider = new TeamsProvider({
+  clientId: process.env.REACT_APP_CLIENT_ID!,
+  authPopupUrl: '/auth.html',
+  scopes: ['User.Read.All'],
+});*/
 initializeIcons();
 
 export const App: React.FunctionComponent = () => {
-  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel, toggle: togglePanel }] = useBoolean(false);
-  const [currentItem, setCurrentItem] = React.useState<ICatalogItem>();
+  const catalogItems = useRecoilValue(getCatalogItems);
+  const [items, setItems] = useRecoilState(catalogItemsState);
 
-  const onDismissPanel = React.useCallback(() => {
-    dismissPanel();
-  }, [dismissPanel]);
-  const onItemSelected = React.useCallback(
-    (item: ICatalogItem) => {
-      setCurrentItem(item);
-    },
-    [openPanel]
-  );
+  React.useEffect(() => {
+    setItems(catalogItems);
+  });
 
+  const pivotStyles: IStyleFunctionOrObject<IPivotStyleProps, IPivotStyles> = { itemContainer: { paddingTop: '10px' } };
   return (
     <>
-      <Header item={currentItem} />
-      <Catalog onItemSelected={onItemSelected} onItemInvoked={openPanel}></Catalog>
-      {isOpen && (
-        <div>
-          <CatalogItemPanel onDismiss={onDismissPanel} item={currentItem} />
-        </div>
-      )}
+      {/*<Login />*/}
+      <Pivot aria-label="Count and Icon Pivot Example" styles={pivotStyles}>
+        <PivotItem headerText="Search" itemCount={23} itemIcon="Search">
+          Pivot #2
+        </PivotItem>
+        <PivotItem headerText="Admin" itemCount={items.length} itemIcon="Settings">
+          <AdminPage></AdminPage>
+        </PivotItem>
+      </Pivot>
     </>
   );
 };
