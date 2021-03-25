@@ -27,8 +27,8 @@
     {
       "entityId": "index",
       "name": "Company Store",
-      "contentUrl": "https://localhost:3000",
-      "websiteUrl": "https://localhost:3000",
+      "contentUrl": "https://lemon-bush-075244a0f.azurestaticapps.net",
+      "websiteUrl": "https://lemon-bush-075244a0f.azurestaticapps.net",
       "scopes": ["personal"]
     }
   ],

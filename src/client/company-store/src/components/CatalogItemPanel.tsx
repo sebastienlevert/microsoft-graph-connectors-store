@@ -3,8 +3,6 @@ import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { useBoolean } from '@uifabric/react-hooks';
 import { ICatalogItem } from '../models/ICatalogItem';
-import { IAudienceType } from '../models/IAudienceType';
-import { isTemplateTail } from 'typescript';
 import { TextField } from '@fluentui/react';
 import { createItem, updateItem } from '../services/CatalogService';
 import { catalogItemsState } from '../state/catalogItemsState';
@@ -19,7 +17,7 @@ export interface INewItemPanelProps {
 }
 
 export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (props: INewItemPanelProps) => {
-  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(true);
+  const [isOpen, { setFalse: dismissPanel }] = useBoolean(true);
   const [catalogItems, setCatalogItems] = useRecoilState(catalogItemsState);
 
   const initialState: ICatalogItem = props.isNew ? ({} as ICatalogItem) : props.item!;
@@ -31,23 +29,19 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
     });
   };
 
-  const onRenderFooterContent = React.useCallback(
-    () => (
-      <div>
-        <PrimaryButton onClick={() => onSave(data)} styles={buttonStyles}>
-          {props.item ? 'Save' : 'Create'}
-        </PrimaryButton>
-        <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
-      </div>
-    ),
-    [dismissPanel, data]
+  const onDismiss = React.useCallback(
+    function () {
+      props.onDismiss();
+      dismissPanel();
+    },
+    [dismissPanel, props]
   );
 
   const onSave = React.useCallback(
     async (data: ICatalogItem) => {
       if (props.item) {
         const updatedItem = await updateItem(data);
-        const catalogItemIndex = catalogItems.findIndex((item) => item.id == updatedItem.id);
+        const catalogItemIndex = catalogItems.findIndex((item) => item.id === updatedItem.id);
         let tempCatalogItems = [...catalogItems];
         tempCatalogItems[catalogItemIndex] = updatedItem;
         setCatalogItems(tempCatalogItems);
@@ -58,13 +52,20 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
 
       onDismiss();
     },
-    [dismissPanel]
+    [catalogItems, onDismiss, props.item, setCatalogItems]
   );
 
-  const onDismiss = function () {
-    props.onDismiss();
-    dismissPanel();
-  };
+  const onRenderFooterContent = React.useCallback(
+    () => (
+      <div>
+        <PrimaryButton onClick={() => onSave(data)} styles={buttonStyles}>
+          {props.item ? 'Save' : 'Create'}
+        </PrimaryButton>
+        <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
+      </div>
+    ),
+    [data, onDismiss, onSave, props.item]
+  );
 
   return (
     <div>

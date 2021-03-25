@@ -5,9 +5,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { catalogItemsState, getCatalogItems } from './state/catalogItemsState';
 import { IPivotStyleProps, IPivotStyles, IStyleFunctionOrObject, Pivot, PivotItem } from '@fluentui/react';
 import { AdminPage } from './pages/AdminPage';
-import * as microsoftTeams from '@microsoft/teams-js';
-import { Providers, TeamsProvider } from '@microsoft/mgt';
-import { Login } from '@microsoft/mgt-react';
 
 /*TeamsProvider.microsoftTeamsLib = microsoftTeams;
 Providers.globalProvider = new TeamsProvider({
@@ -23,7 +20,7 @@ export const App: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     setItems(catalogItems);
-  }, ['']);
+  });
 
   const pivotStyles: IStyleFunctionOrObject<IPivotStyleProps, IPivotStyles> = { itemContainer: { paddingTop: '10px' } };
   return (

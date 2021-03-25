@@ -3,7 +3,6 @@ import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react/lib/Com
 import { useBoolean } from '@uifabric/react-hooks';
 import { CatalogItemPanel } from './CatalogItemPanel';
 import { ICatalogItem } from '../models/ICatalogItem';
-import { deleteItem } from '../services/CatalogService';
 import { itemState } from '../state/itemState';
 import { useRecoilState } from 'recoil';
 import { DeleteItemDialog } from './DeleteItemDialog';
@@ -16,7 +15,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
   const [panelIsOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
   const [deleteDialogIsOpen, { setTrue: openDeleteDialog, setFalse: dismissDeleteDialog }] = useBoolean(false);
   const [isNew, setIsNew] = React.useState<boolean>(false);
-  const [item, setItem] = useRecoilState(itemState);
+  const [item] = useRecoilState(itemState);
   const [commandBarItems, setCommandBarItems] = React.useState<ICommandBarItemProps[]>([]);
 
   React.useEffect(() => {
@@ -48,7 +47,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         onClick: openDeleteDialog,
       },
     ]);
-  }, [item]);
+  }, [openDeleteDialog, props.item, openPanel]);
 
   const _farItems: ICommandBarItemProps[] = [
     {
