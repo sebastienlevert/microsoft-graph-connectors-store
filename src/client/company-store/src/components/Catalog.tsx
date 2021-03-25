@@ -25,7 +25,7 @@ export interface ICatalogProps {
 }
 
 export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogProps) => {
-  const [items, setItems] = useRecoilState(catalogItemsState);
+  const [items] = useRecoilState(catalogItemsState);
   const setItem = useSetRecoilState(itemState);
 
   const columns = React.useMemo(
@@ -100,7 +100,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         isPadded: true,
       },
     ],
-    [items]
+    []
   );
 
   const selection = new Selection({
@@ -126,11 +126,6 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
 
   const _getKey = (item: any, index?: number): string => {
     return item.key;
-  };
-
-  const _copyAndSort = <T,>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] => {
-    const key = columnKey as keyof T;
-    return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
   };
 
   return (
