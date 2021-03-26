@@ -4,7 +4,7 @@ import { useBoolean } from '@uifabric/react-hooks';
 import { CatalogItemPanel } from './CatalogItemPanel';
 import { ICatalogItem } from '../models/ICatalogItem';
 import { itemState } from '../state/itemState';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { DeleteItemDialog } from './DeleteItemDialog';
 import { SearchBox } from '@fluentui/react';
 import { queryState } from '../state/queryState';
@@ -72,7 +72,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         onClick: openTodoDialog,
       },
     ]);
-  }, [item, openPanel, openDeleteDialog, setItem, isSignedIn, openTodoDialog]);
+  }, [item, openPanel, openDeleteDialog, setItem, isSignedIn, openTodoDialog, query]);
 
   const _farItems: ICommandBarItemProps[] = [
     {
