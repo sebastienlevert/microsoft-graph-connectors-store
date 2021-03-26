@@ -2,34 +2,23 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "AzureADAppId": {
-      "type": "string",
-      "metadata": {
-        "description": "The id of the service principal that has access to the destination Data Lake store."
-      }
-    },
-    "AzureADAppSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The key of the service principal that has access to the destination Data Lake store."
-      }
-    }
   },
   "variables": {
+    "guid": "[newguid()]",
     "storageAccount": {
-      "name": "[concat('mgcstorestorage', substring(resourceGroup().id, 0, 6))]",
+      "name": "[concat('mgcstorestorage', variables('guid'))]",
       "blob": {
-        "name": "[concat('mgcstoreblob', substring(resourceGroup().id, 0, 6))]"
+        "name": "[concat('mgcstoreblob', variables('guid'))]"
       }
     },
     "appService": {
-      "name": "[concat('ASP-FHLSpring21-af0d', substring(resourceGroup().id, 0, 6))]",
+      "name": "[concat('ASP-FHLSpring21-af0d', variables('guid'))]",
       "plan": {
-        "name": "[concat('servicePlan', substring(resourceGroup().id, 0, 6))]"
+        "name": "[concat('servicePlan', variables('guid'))]"
       }
     },
     "functionApp": {
-      "name": "[concat('functionApp', substring(resourceGroup().id, 0, 6))]"
+      "name": "[concat('functionApp', variables('guid'))]"
     }
   },
   "resources": [
