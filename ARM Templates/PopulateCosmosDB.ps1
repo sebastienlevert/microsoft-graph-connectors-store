@@ -25,7 +25,7 @@ Function Generate-MasterKeyAuthorizationSignature{
     $key = [System.Web.HttpUtility]::UrlEncode('type='+$KeyType+'&ver='+$TokenVersion+'&sig=' + $signature)
     return $key
 }
-
+Write-Host "Here"
 $endpoint = "https://sql-cosmos.documents.azure.com:443/"
 $MasterKey = "e5yd9mTesLUOLa6fBRZKM5wHhrkPv7paXtFjzzP5u6tFsmdsq3MD6TNLuoij74fMyU0uBjcQGNt09jgi1VS6RQ=="
 
@@ -46,7 +46,7 @@ $verbMethod = "POST"
 $requestUri = "$endpoint$itemResourceLink"
 
 $authKey = Generate-MasterKeyAuthorizationSignature -Verb $verbMethod -ResourceId $itemResourceId -ResourceType $itemResourceType -Date $xDate -MasterKey $MasterKey -KeyType $KeyType -TokenVersion $TokenVersion
-
+Write-Host "AuthKey:$authKey"
 $header = @{
     "authorization"         = "$authKey";
     "x-ms-version"          = "2018-12-31";
@@ -60,12 +60,13 @@ $header = @{
 $ItemDefinition = @"
 {
     "id": "$itemId",
-	"testProperty": "test",
-	"pk": "testPk"
+    "testProperty": "test",
+    "pk": "testPk"
 }
 "@
 
 try {
+    Write-Host "Invoking $requestUri with {$($header | Out-String)}"
     $result = Invoke-RestMethod -Uri $requestUri -Headers $header -Method $verbMethod -ContentType "application/json" -Body $ItemDefinition
     Write-Host "create item response = "$result
     return "CreateItemSuccess";
