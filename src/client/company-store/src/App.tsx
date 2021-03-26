@@ -3,6 +3,7 @@ import './App.css';
 import { initializeIcons } from '@uifabric/icons';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { catalogItemsState, getCatalogItems } from './state/catalogItemsState';
+import { externalItemsState, getExternalItemsTest } from './state/externalItemsState';
 import { AdminPage } from './pages/AdminPage';
 import { TeamsProvider } from '@microsoft/mgt-teams-provider';
 import { Providers } from '@microsoft/mgt-element';
@@ -18,10 +19,13 @@ initializeIcons();
 
 export const App: React.FunctionComponent = () => {
   const catalogItems = useRecoilValue(getCatalogItems);
+  const externalItems = useRecoilValue(getExternalItemsTest);
   const setItems = useSetRecoilState(catalogItemsState);
+  const setExternalItems = useSetRecoilState(externalItemsState);
 
   React.useEffect(() => {
     setItems(catalogItems);
+    setExternalItems(externalItems);
   });
 
   return (

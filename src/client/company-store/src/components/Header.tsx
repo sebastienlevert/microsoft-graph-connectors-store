@@ -4,10 +4,11 @@ import { useBoolean } from '@uifabric/react-hooks';
 import { CatalogItemPanel } from './CatalogItemPanel';
 import { ICatalogItem } from '../models/ICatalogItem';
 import { itemState } from '../state/itemState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { DeleteItemDialog } from './DeleteItemDialog';
 import { SearchBox } from '@fluentui/react';
 import { Login } from '@microsoft/mgt-react';
+import { queryState } from '../state/queryState';
 
 export interface IHeaderProps {
   item?: ICatalogItem;
@@ -18,6 +19,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
   const [deleteDialogIsOpen, { setTrue: openDeleteDialog, setFalse: dismissDeleteDialog }] = useBoolean(false);
   const [isNew, setIsNew] = React.useState<boolean>(false);
   const [item] = useRecoilState(itemState);
+  const setQuery = useSetRecoilState(queryState);
 
   const commandBarItems = React.useMemo(
     (): ICommandBarItemProps[] => [
@@ -72,6 +74,8 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
               width: '220px',
             },
           }}
+          onSearch={setQuery}
+          onClear={() => setQuery('')}
         />
       ),
     },

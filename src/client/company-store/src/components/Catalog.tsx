@@ -9,9 +9,10 @@ import {
 } from 'office-ui-fabric-react/lib/DetailsList';
 import { ICatalogItem } from '../models/ICatalogItem';
 import { Image, ImageFit } from 'office-ui-fabric-react/lib/Image';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { itemState } from '../state/itemState';
 import { catalogItemsState } from '../state/catalogItemsState';
+import { getExternalItemsTest } from '../state/externalItemsState';
 export interface ICatalogState {
   columns: IColumn[];
   items: ICatalogItem[];
@@ -25,7 +26,9 @@ export interface ICatalogProps {
 }
 
 export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogProps) => {
-  const [items] = useRecoilState(catalogItemsState);
+  const externalItems = useRecoilValue(getExternalItemsTest);
+  const [catalogItems] = useRecoilState(catalogItemsState);
+  const [items, setItems] = React.useState<ICatalogItem[]>(catalogItems);
   const setItem = useSetRecoilState(itemState);
 
   const columns = React.useMemo(
@@ -102,6 +105,14 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
     ],
     []
   );
+
+  React.useEffect(() => {
+    setItems(externalItems);
+  }, [externalItems]);
+
+  React.useEffect(() => {
+    setItems(catalogItems);
+  }, [catalogItems]);
 
   const selection = new Selection({
     onSelectionChanged: () => {
