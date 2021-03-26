@@ -41,8 +41,8 @@ $TokenVersion = "1.0"
 $date = Get-Date
 $utcDate = $date.ToUniversalTime()
 $xDate = $utcDate.ToString('r', [System.Globalization.CultureInfo]::InvariantCulture)
-$databaseId = "TestDB"
-$containerId = "TestContainer"
+$databaseId = "mgcstorebrd42po"
+$containerId = "mgccontainer"
 $itemId = "TestItem"
 $itemResourceType = "docs"
 $itemResourceId = "dbs/"+$databaseId+"/colls/"+$containerId
@@ -55,21 +55,14 @@ $requestUri = "$endpoint$itemResourceLink"
 $authKey = Generate-MasterKeyAuthorizationSignature -Verb $verbMethod -ResourceId $itemResourceId -ResourceType $itemResourceType -Date $xDate -MasterKey $MasterKey -KeyType $KeyType -TokenVersion $TokenVersion
 
 $header = @{
-
-        "authorization"         = "$authKey";
-
-        "x-ms-version"          = "2018-12-31";
-
-        "Cache-Control"         = "no-cache";
-
-        "x-ms-date"             = "$xDate";
-
-        "Accept"                = "application/json";
-
-        "User-Agent"            = "PowerShell-RestApi-Samples";
-
-		"x-ms-documentdb-partitionkey" = '["testPk"]'
-    }
+    "authorization"         = "$authKey";
+    "x-ms-version"          = "2018-12-31";
+    "Cache-Control"         = "no-cache";
+    "x-ms-date"             = "$xDate";
+    "Accept"                = "application/json";
+    "User-Agent"            = "PowerShell-RestApi-Samples";
+    "x-ms-documentdb-partitionkey" = '["testPk"]'
+}
 
 $ItemDefinition = @"
 {
