@@ -21,16 +21,18 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
   const [panelIsOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
   const [deleteDialogIsOpen, { setTrue: openDeleteDialog, setFalse: dismissDeleteDialog }] = useBoolean(false);
   const [todoDialogIsOpen, { setTrue: openTodoDialog, setFalse: dismissTodoDialog }] = useBoolean(false);
+  const [commandBarItems, setCommandBarItems] = React.useState<ICommandBarItemProps[]>([]);
   const [item, setItem] = useRecoilState(itemState);
   const [isSignedIn] = useIsSignedIn();
   const setQuery = useSetRecoilState(queryState);
 
-  const commandBarItems = React.useMemo(
-    (): ICommandBarItemProps[] => [
+  React.useEffect(() => {
+    setCommandBarItems([
       {
         key: 'newItem',
         text: 'New',
         iconProps: { iconName: 'Add' },
+        disabled: isSignedIn ? false : true,
         onClick: () => {
           setItem(undefined);
           openPanel();
@@ -40,7 +42,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         key: 'editItem',
         text: 'Edit',
         iconProps: { iconName: 'Edit' },
-        disabled: item ? false : true,
+        disabled: item && isSignedIn ? false : true,
         onClick: () => {
           setItem(item);
           openPanel();
@@ -50,7 +52,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         key: 'deleteItem',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
-        disabled: item ? false : true,
+        disabled: item && isSignedIn ? false : true,
         onClick: openDeleteDialog,
       },
       {
@@ -69,9 +71,8 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         disabled: item && isSignedIn ? false : true,
         onClick: openTodoDialog,
       },
-    ],
-    [item, openPanel, openDeleteDialog, setItem, isSignedIn, openTodoDialog]
-  );
+    ]);
+  }, [item, openPanel, openDeleteDialog, setItem, isSignedIn, openTodoDialog]);
 
   const _farItems: ICommandBarItemProps[] = [
     {

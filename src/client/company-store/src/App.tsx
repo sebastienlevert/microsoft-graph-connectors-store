@@ -13,7 +13,14 @@ TeamsProvider.microsoftTeamsLib = microsoftTeams;
 Providers.globalProvider = new TeamsProvider({
   clientId: process.env.REACT_APP_CLIENT_ID!,
   authPopupUrl: '/auth.html',
-  scopes: ['User.Read', 'User.ReadBasic.All', 'User.Read.All', 'ExternalItem.Read.All'],
+  scopes: [
+    'User.Read',
+    'User.ReadBasic.All',
+    'User.Read.All',
+    'People.Read',
+    'ExternalItem.Read.All',
+    'Group.Read.All',
+  ],
 });
 initializeIcons();
 

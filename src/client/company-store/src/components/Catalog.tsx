@@ -14,6 +14,10 @@ import { itemState } from '../state/itemState';
 import { catalogItemsState } from '../state/catalogItemsState';
 import { getExternalItemsTest } from '../state/externalItemsState';
 import { queryState } from '../state/queryState';
+import { People, PersonCardInteraction } from '@microsoft/mgt-react';
+import { IAudienceItem } from '../models/IAudienceItem';
+import { useIsSignedIn } from '../hooks/useIsSignedIn';
+import { Placeholder } from './Placeholder';
 export interface ICatalogState {
   columns: IColumn[];
   items: ICatalogItem[];
@@ -29,10 +33,12 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
   const [catalogItems] = useRecoilState(catalogItemsState);
   const [query] = useRecoilState(queryState);
   const [items, setItems] = React.useState<ICatalogItem[]>(catalogItems);
+  const [columns, setColumns] = React.useState<IColumn[]>([]);
   const setItem = useSetRecoilState(itemState);
+  const [isSignedIn] = useIsSignedIn();
 
-  const columns = React.useMemo(
-    (): IColumn[] => [
+  React.useEffect(() => {
+    setColumns([
       {
         key: 'columnTitle',
         name: 'Title',
@@ -76,6 +82,21 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         data: 'string',
         isPadded: true,
       },
+      ...(query === ''
+        ? [
+            {
+              key: 'columnAudience',
+              name: 'Audience',
+              fieldName: 'audience',
+              minWidth: 50,
+              maxWidth: 100,
+              isResizable: true,
+              isCollapsible: true,
+              data: 'string',
+              isPadded: true,
+            },
+          ]
+        : []),
       {
         key: 'columnDescription',
         name: 'Description',
@@ -98,9 +119,8 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         data: 'string',
         isPadded: true,
       },
-    ],
-    []
-  );
+    ]);
+  }, [query]);
 
   React.useEffect(() => {
     let sortedItems = [];
@@ -123,16 +143,29 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
   });
 
   const _renderItemColumn = (item: ICatalogItem, index: number | undefined, column: IColumn | undefined) => {
-    const fieldContent = item[column?.fieldName as keyof ICatalogItem] as string;
-
     switch (column?.key) {
       case 'columnThumbnailUrl':
-        return <Image src={fieldContent} height={70} imageFit={ImageFit.contain} />;
+        const thumbnailContent = item[column?.fieldName as keyof ICatalogItem] as string;
+        return <Image src={thumbnailContent} height={70} imageFit={ImageFit.contain} />;
+
+      case 'columnAudience':
+        const audiences = item[column?.fieldName as keyof ICatalogItem] as IAudienceItem[];
+        return (
+          <People
+            userIds={audiences?.map((audience) => {
+              return audience.id;
+            })}
+            personCardInteraction={PersonCardInteraction.none}
+            showMax={3}
+          />
+        );
 
       case 'columnPrice':
-        return <span>{fieldContent}</span>;
+        const priceContent = item[column?.fieldName as keyof ICatalogItem] as string;
+        return <span>{priceContent}</span>;
 
       default:
+        const fieldContent = item[column?.fieldName as keyof ICatalogItem] as string;
         return <span>{fieldContent}</span>;
     }
   };
@@ -143,7 +176,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
 
   return (
     <Fabric>
-      {items && (
+      {items && isSignedIn && (
         <DetailsList
           items={items}
           columns={columns}
@@ -164,6 +197,8 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
           checkButtonAriaLabel="select row"
         />
       )}
+      {!isSignedIn && <Placeholder text={'Please sign in'} icon={'SignIn'} />}
+      {(!items || items.length === 0) && isSignedIn && <Placeholder text={'No results...'} icon={'ErrorBadge'} />}
     </Fabric>
   );
 };

@@ -3,12 +3,15 @@ import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react/lib/Button'
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { useBoolean } from '@uifabric/react-hooks';
 import { ICatalogItem } from '../models/ICatalogItem';
-import { TextField } from '@fluentui/react';
+import { Label, TextField } from '@fluentui/react';
 import { createItem, updateItem } from '../services/CatalogService';
 import { catalogItemsState } from '../state/catalogItemsState';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { getCatalogItem } from '../state/itemState';
 import { Loading } from './Loading';
+import { PeoplePicker, PersonType } from '@microsoft/mgt-react';
+import { IAudienceItem } from '../models/IAudienceItem';
+import { IAudienceType } from '../models/IAudienceType';
 
 const buttonStyles = { root: { marginRight: 8 } };
 
@@ -24,6 +27,7 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
 
   //const initialState: ICatalogItem = props.isNew ? ({} as ICatalogItem) : props.item!;
   const [data, setData] = React.useState<ICatalogItem>({} as ICatalogItem);
+
   const handleInputChange = (event: any) => {
     setData({
       ...data,
@@ -107,6 +111,28 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
           />
           <TextField label="Thumbnail" name="thumbnailUrl" value={data.thumbnailUrl} onChange={handleInputChange} />
           <TextField label="Url" name="url" value={data.url} onChange={handleInputChange} />
+          <Label htmlFor={'peoplePicker'}>Audience</Label>
+          <PeoplePicker
+            id={'peoplePicker'}
+            type={PersonType.person}
+            defaultSelectedUserIds={data.audience?.map((user) => {
+              return user ? user.id : '';
+            })}
+            selectionChanged={(event: any) => {
+              setData({
+                ...data,
+                audience: event.detail.map((selected: any) => {
+                  const people: IAudienceItem = {
+                    id: selected.id,
+                    type: selected.groupTypes ? IAudienceType.Group : IAudienceType.User,
+                  };
+
+                  return people;
+                }),
+              });
+              console.log(event);
+            }}
+          ></PeoplePicker>
         </Panel>
       </React.Suspense>
     </div>
