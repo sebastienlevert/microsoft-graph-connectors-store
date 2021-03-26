@@ -19,9 +19,6 @@
     },
     "appService": {
       "name": "[concat('ASP-FHLSpring21-af0d', substring(uniqueString(resourceGroup().name),0,7))]",
-      "plan": {
-        "name": "[concat('servicePlan', substring(uniqueString(resourceGroup().name),0,7))]"
-      }
     },
     "functionApp": {
       "name": "[concat('functionApp', substring(uniqueString(resourceGroup().name),0,7))]"
@@ -115,7 +112,7 @@
         "capacity": "[int(1)]"
       },
       "properties": {
-        "name": "[variables('appService').plan.name]"
+        "name": "[variables('appService').name]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccount').name, 'default', variables('storageAccount').blob.name)]"
