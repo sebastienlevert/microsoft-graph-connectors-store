@@ -16,25 +16,18 @@ Function Generate-MasterKeyAuthorizationSignature{
     )
 
     $keyBytes = [System.Convert]::FromBase64String($MasterKey)
-
     $sigCleartext = @($Verb.ToLower() + "`n" + $ResourceType.ToLower() + "`n" + $ResourceId + "`n" + $Date.ToString().ToLower() + "`n" + "" + "`n")
 	Write-Host "sigCleartext = " $sigCleartext
-
     $bytesSigClear = [Text.Encoding]::UTF8.GetBytes($sigCleartext)
-
     $hmacsha = new-object -TypeName System.Security.Cryptography.HMACSHA256 -ArgumentList (, $keyBytes)
-
     $hash = $hmacsha.ComputeHash($bytesSigClear) 
-
     $signature = [System.Convert]::ToBase64String($hash)
-
     $key = [System.Web.HttpUtility]::UrlEncode('type='+$KeyType+'&ver='+$TokenVersion+'&sig=' + $signature)
-
     return $key
 }
 
 $endpoint = "https://sql-cosmos.documents.azure.com:443/"
-$MasterKey = "GwSZtMsZO4dcWBD57taQGmsckyK2ub2eDavexMXsVgOuhw8nMLwnK9wLNcYWGDnnwn5vRR15syclDHCXpVZc7g=="
+$MasterKey = "e5yd9mTesLUOLa6fBRZKM5wHhrkPv7paXtFjzzP5u6tFsmdsq3MD6TNLuoij74fMyU0uBjcQGNt09jgi1VS6RQ=="
 
 $KeyType = "master"
 $TokenVersion = "1.0"
