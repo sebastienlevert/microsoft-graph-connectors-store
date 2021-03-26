@@ -126,11 +126,19 @@
       "kind": "GlobalDocumentDB",
       "properties": {
         "consistencyPolicy": {
-          "defaultConsistencyLevel": "Session"
+          "defaultConsistencyLevel": "Eventual",
+          "maxStalenessPrefix": 1,
+          "maxIntervalInSeconds": 5
         },
-        "locations": "[resourceGroup().location]",
+        "locations": [
+          {
+            "locationName": "[resourceGroup().location]",
+            "failoverPriority": 0
+          }
+        ],
         "databaseAccountOfferType": "Standard",
-        "enableAutomaticFailover": true
+        "enableAutomaticFailover": true,
+        "enableMultipleWriteLocations": true
       }
     },
     {
