@@ -24,7 +24,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
   const [commandBarItems, setCommandBarItems] = React.useState<ICommandBarItemProps[]>([]);
   const [item, setItem] = useRecoilState(itemState);
   const [isSignedIn] = useIsSignedIn();
-  const setQuery = useSetRecoilState(queryState);
+  const [query, setQuery] = useRecoilState(queryState);
 
   React.useEffect(() => {
     setCommandBarItems([
@@ -42,7 +42,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         key: 'editItem',
         text: 'Edit',
         iconProps: { iconName: 'Edit' },
-        disabled: item && isSignedIn ? false : true,
+        disabled: item && isSignedIn && !query ? false : true,
         onClick: () => {
           setItem(item);
           openPanel();
@@ -52,7 +52,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         key: 'deleteItem',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
-        disabled: item && isSignedIn ? false : true,
+        disabled: item && isSignedIn && !query ? false : true,
         onClick: openDeleteDialog,
       },
       {
