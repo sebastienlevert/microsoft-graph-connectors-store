@@ -9,20 +9,10 @@
       "apiVersion": "2020-10-01",
       "name": "PopulateCosmosDB",
       "location": "[resourceGroup().location]",
-      "kind": "AzurePowerShell", // or "AzureCLI"
+      "kind": "AzurePowerShell",
       "properties": {
         "forceUpdateTag": "1",
-        "azPowerShellVersion": "3.0",  // or "azCliVersion": "2.0.80",
-        "environmentVariables": [
-          {
-            "name": "UserName",
-            "value": "jdole"
-          },
-          {
-            "name": "Password",
-            "secureValue": "jDolePassword"
-          }
-        ],
+        "azPowerShellVersion": "3.0", 
         "primaryScriptUri": "https://raw.githubusercontent.com/sebastienlevert/microsoft-graph-connectors-store/ARM/ARM%20Templates/PopulateCosmosDB.ps1",
         "supportingScriptUris":[],
         "timeout": "PT30M",
