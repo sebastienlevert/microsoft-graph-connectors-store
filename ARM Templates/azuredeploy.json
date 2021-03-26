@@ -32,6 +32,9 @@
       "container":{
         "name": "mgccontainer"
       }
+    },
+    "appInsights": {
+      "name": "[concat('mgcInsights', substring(uniqueString(resourceGroup().name),0,7))]"
     }
   },
   "resources": [
@@ -117,36 +120,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccount').name, 'default', variables('storageAccount').blob.name)]"
       ]
-    },
-    {
-      "apiVersion": "2015-08-01",
-      "type": "Microsoft.Web/sites",
-      "name": "[variables('functionApp').name]",
-      "location": "[resourceGroup().location]",
-      "kind": "functionapp",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name)]"
-      ],
-      "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
-        "siteConfig": {
-          "appSettings": [
-            {
-              "name": "WEBSITE_CONTENTSHARE",
-              "value": "storageFunc"
-            },
-            {
-              "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~2"
-            },
-            {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "dotnet"
-            }
-          ]
-        }
-      }
     },
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
@@ -236,6 +209,62 @@
           }
         },
         "options": { "throughput": 400 }
+      }
+    },
+    {
+      "apiVersion": "2014-04-01",
+      "name": "[variables('appInsights').name]",
+      "type": "Microsoft.Insights/components",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "applicationId": "[variables('appInsights').name]"
+      }
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionApp').name]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name)]",
+        "[resourceId('Microsoft.Insights/components', variables('functionApp').name)]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(variables('functionApp').name)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(concat('microsoft.insights/components/', variables('appInsights').name)).InstrumentationKey]"
+            }
+          ]
+        }
       }
     }
   ]
