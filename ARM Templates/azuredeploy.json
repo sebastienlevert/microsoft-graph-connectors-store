@@ -23,7 +23,13 @@
       }
     },
     "appService": {
-      "name": "[concat('ASP-FHLSpring21-af0d', substring(resourceGroup().id, 0, 6))]"
+      "name": "[concat('ASP-FHLSpring21-af0d', substring(resourceGroup().id, 0, 6))]",
+      "plan": {
+        "name": "[concat('servicePlan', substring(resourceGroup().id, 0, 6))]"
+      }
+    },
+    "functionApp": {
+      "name": "[concat('functionApp', substring(resourceGroup().id, 0, 6))]"
     }
   },
   "resources": [
@@ -104,11 +110,41 @@
         "capacity": "[int(1)]"
       },
       "properties": {
-        "name": "Free"
+        "name": "[variables('appService').plan.name]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccount').name, 'default', 'mgdccontainer')]"
       ]
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionApp').name]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name)]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "storageFunc"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            }
+          ]
+        }
+      }
     }
   ]
 }
