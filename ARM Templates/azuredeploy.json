@@ -4,7 +4,7 @@
   "parameters": {
     "accountName": {
       "type": "string",
-      "defaultValue": "[concat('cosmos', uniqueString(resourceGroup().id))]",
+      "defaultValue": "sql-cosmos",
       "metadata": {
         "description": "Cosmos DB account name, max length 44 characters"
       }
@@ -229,7 +229,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name)]",
-        "[resourceId('Microsoft.Insights/components', variables('functionApp').name)]"
+        "[resourceId('Microsoft.Insights/components', variables('appInsights').name)]"
       ],
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appService').name)]",
