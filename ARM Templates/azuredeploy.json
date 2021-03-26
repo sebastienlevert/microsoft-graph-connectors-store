@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "accountName": {
+      "type": "string",
+      "defaultValue": "[concat('sql-', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Cosmos DB account name, max length 44 characters"
+      }
+    }
   },
   "variables": {
     "storageAccount": {
@@ -18,6 +25,13 @@
     },
     "functionApp": {
       "name": "[concat('functionApp', substring(uniqueString(resourceGroup().name),0,7))]"
+    },
+    "cosmosDB": {
+      "name": "[concat('mgcstore', substring(uniqueString(resourceGroup().name),0,7))]",
+      "accountName": "[toLower(parameters('accountName'))]",
+      "container":{
+        "name": "mgccontainer"
+      }
     }
   },
   "resources": [
@@ -132,6 +146,96 @@
             }
           ]
         }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2021-01-15",
+      "name": "[variables('cosmosDB').accountName]",
+      "location": "[resourceGroup().location]",
+      "kind": "GlobalDocumentDB",
+      "properties": {
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "Session"
+        },
+        "locations": "[resourceGroup().location]",
+        "databaseAccountOfferType": "Standard",
+        "enableAutomaticFailover": true
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "apiVersion": "2021-01-15",
+      "name": "[concat(variables('cosmosDB').accountName, '/', variables('cosmosDB').name)]",
+      "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDB').accountName)]" ],
+      "properties": {
+        "resource": {
+          "id": "[variables('cosmosDB').name]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2021-01-15",
+      "name": "[concat(variables('cosmosDB').accountName, '/', variables('cosmosDB').name, '/', variables('cosmosDB').container.name)]",
+      "dependsOn": [ "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('cosmosDB').accountName, variables('cosmosDB').name)]" ],
+      "properties": {
+        "resource": {
+          "id": "[variables('cosmosDB').container.name]",
+          "partitionKey": {
+            "paths": [
+              "/myPartitionKey"
+            ],
+            "kind": "Hash"
+          },
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/myPathToNotIndex/*"
+              }
+            ],
+            "compositeIndexes": [
+              [
+                {
+                  "path": "/name",
+                  "order": "ascending"
+                },
+                {
+                  "path": "/age",
+                  "order": "descending"
+                }
+              ]
+            ],
+            "spatialIndexes": [
+              {
+                "path": "/path/to/geojson/property/?",
+                "types": [
+                  "Point",
+                  "Polygon",
+                  "MultiPolygon",
+                  "LineString"
+                ]
+              }
+            ]
+          },
+          "defaultTtl": 86400,
+          "uniqueKeyPolicy": {
+            "uniqueKeys": [
+              {
+                "paths": [
+                  "/phoneNumber"
+                ]
+              }
+            ]
+          }
+        },
+        "options": { "throughput": 400 }
       }
     }
   ]
