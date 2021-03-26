@@ -237,15 +237,15 @@
           "appSettings": [
             {
               "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), '2015-05-01-preview').key1)]"
             },
             {
               "name": "AzureWebJobsDashboard",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), '2015-05-01-preview').key1)]"
             },
             {
               "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccount').name, ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccount').name), '2015-05-01-preview').key1)]"
             },
             {
               "name": "WEBSITE_CONTENTSHARE",
