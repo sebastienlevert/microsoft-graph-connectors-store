@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import { ICatalogItem } from '../models/ICatalogItem';
-import { getExternalItems } from '../services/CatalogService';
+import { getExternalItems } from '../services/ExternalItemsService';
 import { queryState } from './queryState';
 
 export const externalItemsState = atom<ICatalogItem[]>({

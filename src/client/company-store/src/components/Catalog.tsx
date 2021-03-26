@@ -13,6 +13,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { itemState } from '../state/itemState';
 import { catalogItemsState } from '../state/catalogItemsState';
 import { getExternalItemsTest } from '../state/externalItemsState';
+import { queryState } from '../state/queryState';
 export interface ICatalogState {
   columns: IColumn[];
   items: ICatalogItem[];
@@ -21,13 +22,12 @@ export interface ICatalogState {
   announcedMessage?: string;
 }
 
-export interface ICatalogProps {
-  onItemInvoked(): void;
-}
+export interface ICatalogProps {}
 
 export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogProps) => {
   const externalItems = useRecoilValue(getExternalItemsTest);
   const [catalogItems] = useRecoilState(catalogItemsState);
+  const [query] = useRecoilState(queryState);
   const [items, setItems] = React.useState<ICatalogItem[]>(catalogItems);
   const setItem = useSetRecoilState(itemState);
 
@@ -41,10 +41,6 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         maxWidth: 250,
         isRowHeader: true,
         isResizable: true,
-        isSorted: true,
-        isSortedDescending: true,
-        sortAscendingAriaLabel: 'Sorted A to Z',
-        sortDescendingAriaLabel: 'Sorted Z to A',
         data: 'string',
         isPadded: true,
       },
@@ -107,12 +103,18 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
   );
 
   React.useEffect(() => {
-    setItems(externalItems);
-  }, [externalItems]);
+    let sortedItems = [];
+    if (query) {
+      sortedItems = [...externalItems];
+    } else {
+      sortedItems = [...catalogItems];
+    }
+    sortedItems.sort((a, b) => {
+      return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+    });
 
-  React.useEffect(() => {
-    setItems(catalogItems);
-  }, [catalogItems]);
+    setItems(sortedItems);
+  }, [externalItems, catalogItems, query]);
 
   const selection = new Selection({
     onSelectionChanged: () => {

@@ -12,12 +12,10 @@ export async function getItems(title?: string): Promise<ICatalogItem[]> {
   }
 }
 
-export function getExternalItems(title: string): Promise<ICatalogItem[]> {
-  return getItems(title);
-}
-
-export function getItem(id: string) {
-  return fetch(`${process.env.REACT_APP_API_BASE_URL}/items/${id}`).then((response) => response.json());
+export async function getItem(id: string) {
+  return await httpPost<{ id: string }, ICatalogItem[]>(`${process.env.REACT_APP_API_BASE_URL}/GetProductById`, {
+    id: id,
+  });
 }
 
 export async function updateItem(item: ICatalogItem): Promise<ICatalogItem> {

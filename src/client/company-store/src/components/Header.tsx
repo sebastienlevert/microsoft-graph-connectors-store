@@ -7,8 +7,11 @@ import { itemState } from '../state/itemState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { DeleteItemDialog } from './DeleteItemDialog';
 import { SearchBox } from '@fluentui/react';
-import { Login } from '@microsoft/mgt-react';
 import { queryState } from '../state/queryState';
+import { Login } from '@microsoft/mgt-react';
+import { SimpleLogin } from './SimpleLogin';
+import { useIsSignedIn } from '../hooks/useIsSignedIn';
+import { TodoItemDialog } from './TodoItemDialog';
 
 export interface IHeaderProps {
   item?: ICatalogItem;
@@ -17,8 +20,9 @@ export interface IHeaderProps {
 export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProps) => {
   const [panelIsOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
   const [deleteDialogIsOpen, { setTrue: openDeleteDialog, setFalse: dismissDeleteDialog }] = useBoolean(false);
-  const [isNew, setIsNew] = React.useState<boolean>(false);
-  const [item] = useRecoilState(itemState);
+  const [todoDialogIsOpen, { setTrue: openTodoDialog, setFalse: dismissTodoDialog }] = useBoolean(false);
+  const [item, setItem] = useRecoilState(itemState);
+  const [isSignedIn] = useIsSignedIn();
   const setQuery = useSetRecoilState(queryState);
 
   const commandBarItems = React.useMemo(
@@ -28,7 +32,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         text: 'New',
         iconProps: { iconName: 'Add' },
         onClick: () => {
-          setIsNew(true);
+          setItem(undefined);
           openPanel();
         },
       },
@@ -38,7 +42,7 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         iconProps: { iconName: 'Edit' },
         disabled: item ? false : true,
         onClick: () => {
-          setIsNew(false);
+          setItem(item);
           openPanel();
         },
       },
@@ -58,8 +62,15 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
           window.open(item?.url, '_blank');
         },
       },
+      {
+        key: 'addTodoItem',
+        text: 'Send to To Do',
+        iconProps: { iconName: 'ToDoLogoOutline' },
+        disabled: item && isSignedIn ? false : true,
+        onClick: openTodoDialog,
+      },
     ],
-    [item, openPanel, openDeleteDialog, setIsNew]
+    [item, openPanel, openDeleteDialog, setItem, isSignedIn, openTodoDialog]
   );
 
   const _farItems: ICommandBarItemProps[] = [
@@ -72,8 +83,11 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
           styles={{
             root: {
               width: '220px',
+              marginTop: '5px',
             },
           }}
+          disabled={!isSignedIn}
+          underlined={true}
           onSearch={setQuery}
           onClear={() => setQuery('')}
         />
@@ -81,7 +95,11 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
     },
     {
       key: 'login',
-      onRender: () => <Login />,
+      onRender: () => (
+        <Login>
+          <SimpleLogin template="signed-in-button-content" />
+        </Login>
+      ),
     },
   ];
 
@@ -92,8 +110,9 @@ export const Header: React.FunctionComponent<IHeaderProps> = (props: IHeaderProp
         farItems={_farItems}
         ariaLabel="Use left and right arrow keys to navigate between commands"
       />
-      {panelIsOpen && <CatalogItemPanel onDismiss={dismissPanel} item={item} isNew={isNew} />}
+      {panelIsOpen && <CatalogItemPanel onDismiss={dismissPanel} />}
       {deleteDialogIsOpen && <DeleteItemDialog item={item} onDismiss={dismissDeleteDialog} />}
+      {todoDialogIsOpen && <TodoItemDialog onDismiss={dismissTodoDialog} />}
     </div>
   );
 };
