@@ -1,0 +1,114 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "AzureADAppId": {
+      "type": "string",
+      "metadata": {
+        "description": "The id of the service principal that has access to the destination Data Lake store."
+      }
+    },
+    "AzureADAppSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "The key of the service principal that has access to the destination Data Lake store."
+      }
+    }
+  },
+  "variables": {
+    "storageAccount": {
+      "name": "[concat('mgcstorestorage', substring(resourceGroup().id, 0, 6))]",
+      "blob": {
+        "name": "[concat('mgcstoreblob', substring(resourceGroup().id, 0, 6))]"
+      }
+    },
+    "appService": {
+      "name": "[concat('ASP-FHLSpring21-af0d', substring(resourceGroup().id, 0, 6))]"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2020-08-01-preview",
+      "name": "[variables('storageAccount').name]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "minimumTlsVersion": "TLS1_2",
+        "allowBlobPublicAccess": true,
+        "allowSharedKeyAccess": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2020-08-01-preview",
+      "name": "[concat(variables('storageAccount').name, '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccount').name)]"
+      ],
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2020-08-01-preview",
+      "name": "[concat(variables('storageAccount').name, '/default/', variables('storageAccount').blob.name)]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccount').name, 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccount').name)]"
+      ],
+      "properties": {
+        "defaultEncryptionScope": "$account-encryption-key",
+        "denyEncryptionScopeOverride": false,
+        "publicAccess": "Container"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('appService').name]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "F1",
+        "capacity": "[int(1)]"
+      },
+      "properties": {
+        "name": "Free"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccount').name, 'default', 'mgdccontainer')]"
+      ]
+    }
+  ]
+}
