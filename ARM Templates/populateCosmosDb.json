@@ -81,7 +81,7 @@
               Write-Host \"Exception Message:\" $_.Exception.Message
             echo $_.Exception|format-list -force
           }
-        \", // or \"primaryScriptUri\": \"https://raw.githubusercontent.com/Azure/azure-docs-json-samples/master/deployment-script/deploymentscript-helloworld.ps1",
+        ",
         "supportingScriptUris":[],
         "timeout": "PT30M",
         "cleanupPreference": "OnSuccess",
