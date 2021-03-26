@@ -1,3 +1,5 @@
+Add-Type -AssemblyName System.Web
+
 Function Generate-MasterKeyAuthorizationSignature{
 
     [CmdletBinding()]
@@ -31,8 +33,8 @@ Function Generate-MasterKeyAuthorizationSignature{
     return $key
 }
 
-$endpoint = "https://localhost:8081/"
-$MasterKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+$endpoint = "https://sql-cosmos.documents.azure.com:443/"
+$MasterKey = "GwSZtMsZO4dcWBD57taQGmsckyK2ub2eDavexMXsVgOuhw8nMLwnK9wLNcYWGDnnwn5vRR15syclDHCXpVZc7g=="
 
 $KeyType = "master"
 $TokenVersion = "1.0"
