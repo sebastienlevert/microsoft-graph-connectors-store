@@ -17,10 +17,8 @@
         }
       },*/
       "properties": {
-        "forceUpdateTag": "1",
-        
+        "forceUpdateTag": "1",        
         "azPowerShellVersion": "3.0",  // or "azCliVersion": "2.0.80",
-        "arguments": "-name \\\"John Dole\\\"",
         "environmentVariables": [
           {
             "name": "UserName",
@@ -32,7 +30,7 @@
           }
         ],
         "scriptContent": "
-          $endpoint = \"https://localhost:8081/\"          
+          $endpoint = \\\"https://localhost:8081/\\\"
         ",
         "supportingScriptUris":[],
         "timeout": "PT30M",
