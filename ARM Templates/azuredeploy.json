@@ -169,7 +169,7 @@
           "id": "[variables('cosmosDB').container.name]",
           "partitionKey": {
             "paths": [
-              "/myPartitionKey"
+              "/title"
             ],
             "kind": "Hash"
           },
@@ -182,45 +182,14 @@
             ],
             "excludedPaths": [
               {
-                "path": "/myPathToNotIndex/*"
-              }
-            ],
-            "compositeIndexes": [
-              [
-                {
-                  "path": "/name",
-                  "order": "ascending"
-                },
-                {
-                  "path": "/age",
-                  "order": "descending"
-                }
-              ]
-            ],
-            "spatialIndexes": [
-              {
-                "path": "/path/to/geojson/property/?",
-                "types": [
-                  "Point",
-                  "Polygon",
-                  "MultiPolygon",
-                  "LineString"
-                ]
+                "path": "/\"_etag\"/?"
               }
             ]
           },
-          "defaultTtl": 86400,
           "uniqueKeyPolicy": {
-            "uniqueKeys": [
-              {
-                "paths": [
-                  "/phoneNumber"
-                ]
-              }
-            ]
+            "uniqueKeys": []
           }
-        },
-        "options": { "throughput": 400 }
+        }
       }
     },
     {
@@ -281,6 +250,42 @@
             }
           ]
         }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "PopulateCosmosDB",
+      "location": "[resourceGroup().location]",
+      "kind": "AzurePowerShell",
+      "properties": {
+        "forceUpdateTag": "1",
+        "azPowerShellVersion": "3.0",
+        "environmentVariables": [
+          {
+            "name": "MasterKey",
+            "value": "[listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDB').accountName), '2021-01-15').primaryMasterKey]"
+          },
+          {
+            "name": "EndpointURI",
+            "value": "[concat('https://', variables('cosmosDB').accountName, 'documents.azure.com:443/')]"
+          },
+          {
+            "name": "DatabaseID",
+            "value": "[variables('cosmosDB').name]"
+          },
+          {
+            "name": "ContainerID",
+            "value": "[variables('cosmosDB').container.name]"
+          }
+        ],
+        "primaryScriptUri": "https://raw.githubusercontent.com/sebastienlevert/microsoft-graph-connectors-store/ARM/ARM%20Templates/PopulateCosmosDB.ps1",
+        "timeout": "PT30M",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D",
+        "dependsOn": [
+          "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', variables('cosmosDB').accountName, variables('cosmosDB').name, variables('cosmosDB').container.name)]"
+        ]
       }
     }
   ]
