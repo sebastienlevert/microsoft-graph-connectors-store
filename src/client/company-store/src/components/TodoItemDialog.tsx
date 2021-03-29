@@ -15,7 +15,6 @@ import {
 import { useRecoilValue } from 'recoil';
 import { getCatalogItem } from '../state/itemState';
 import { addTodoItem, getTaskLists } from '../services/TasksService';
-import { Loading } from './Loading';
 
 export interface ITodotemDialogProps {
   onDismiss(): void;
@@ -52,13 +51,6 @@ export const TodoItemDialog: React.FunctionComponent<ITodotemDialogProps> = (pro
     title: `Add ${item?.title} to Todo?`,
     closeButtonAriaLabel: 'Close',
   };
-
-  const modalProps = React.useMemo(
-    () => ({
-      isBlocking: true,
-    }),
-    []
-  );
 
   const onTaskListChange = React.useCallback(
     (ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
