@@ -18,7 +18,7 @@ export async function getExternalItems(query: string): Promise<any[]> {
         requests: [
           {
             entityTypes: ['externalItem'],
-            contentSources: ['/external/connections/fhlspring21mgcstorebravo'],
+            contentSources: [`/external/connections/${process.env.REACT_APP_EXTERNAL_CONNECTION_ID!}`],
             query: {
               queryString: query,
             },
