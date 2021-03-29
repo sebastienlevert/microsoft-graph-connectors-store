@@ -79,7 +79,7 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
 
       onDismiss();
     },
-    [catalogItems, onDismiss, item, setCatalogItems]
+    [catalogItems, onDismiss, setCatalogItems, props.isNew]
   );
 
   const onRenderFooterContent = React.useCallback(
@@ -91,7 +91,7 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
         <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
       </div>
     ),
-    [data, onDismiss, onSave, item, isValid]
+    [data, onDismiss, onSave, isValid, props.isNew]
   );
 
   return (
