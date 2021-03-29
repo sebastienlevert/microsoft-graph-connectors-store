@@ -1,0 +1,437 @@
+[
+    {
+        "id": "259bb32d90d648598fd372b4b3c0393e",
+        "title": "ASUS Zenbook Jeeze",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3zid7?ver=37e7&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Asus",
+        "category": "Laptop",
+        "description": "Pro VInny Slim and stylish, available in 13.5 inch and new 15 inch touchscreens, rich color options, and two durable finishes. Make a powerful statement and get improved speed, performance, and all-day battery life.",
+        "price": 100.11,
+        "url": "https://www.microsoft.com/en-us/p/surface-laptop-3/8vfggh1r94tm?activetab=overview&cid=msft_web_collection",
+        "audience": [
+            {
+                "id": "e09e4dce-4ec1-4f9e-a482-107eec83a376",
+                "type": "user"
+            },
+            {
+                "id": "267eb93c-c6c4-4f4e-b6f1-5671103eb8ee",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            }
+        ],
+        "_rid": "ta5nAKDymXwDAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwDAAAAAAAAAA==/",
+        "_etag": "\"55003292-0000-0200-0000-605e1a900000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616779920
+    },
+    {
+        "id": "6aca6c7bea39489c82cb5ed1018c2f1a",
+        "title": "Surface Headphones 3",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE2vpP8?ver=4c86&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&o=f&aim=true",
+        "company": "Microsoft",
+        "category": "Devices",
+        "description": "The smarter way to listen. Music and calls sound spectacular with active noise cancellation, rich audio, Bluetooth connectivity, and on-ear touch controls.",
+        "price": 469.99,
+        "url": "https://www.microsoft.com/en-us/p/surface-headphones/8nrm8dz2zw43?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwFAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwFAAAAAAAAAA==/",
+        "_etag": "\"5600da38-0000-0200-0000-605e1fe40000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616781284
+    },
+    {
+        "id": "564b9b90555c4850985dcbf6f1194a11",
+        "title": "Microsoft Ergonomic Keyboard",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3Cwxh?ver=e965&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Microsoft",
+        "category": "Devices",
+        "description": "Work in comfort all day. Microsoft Ergonomic Keyboard reduces fatigue and delivers a slim, refined design with split keyboard, improved cushioned palm rest, and dedicated shortcut keys.",
+        "price": 99.99,
+        "url": "https://www.microsoft.com/en-us/p/microsoft-ergonomic-keyboard/93841ngdwr1h?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwGAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwGAAAAAAAAAA==/",
+        "_etag": "\"500012da-0000-0200-0000-605df6200000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616770592
+    },
+    {
+        "id": "21fe24d518a24dc6b1b76280f6e0dfd8",
+        "title": "Xbox Wireless Controller",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3oSVV?ver=1231&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Microsoft",
+        "category": "Gaming",
+        "description": "Equip yourself with the Xbox Wireless Controller Kait Diaz Limited Edition, featuring a snow-weathered design inspired by Kaits armor.",
+        "price": 74.99,
+        "url": "https://www.microsoft.com/en-us/p/xbox-wireless-controller-gears-5-kait-diaz-limited-edition/90c421ss25rf?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwIAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwIAAAAAAAAAA==/",
+        "_etag": "\"3700bb6e-0000-0200-0000-605ca2560000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616683606
+    },
+    {
+        "id": "fe76586ebad046e39f5c84c224b5fc22",
+        "title": "Surface Mobile Mouse",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE2crYN?ver=c52b&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Microsoft",
+        "category": "Devices",
+        "description": "Light and portable, the new Surface Mobile Mouse delivers seamless scrolling and cord-free Bluetooth connectivity. Available in 3 rich colors.",
+        "price": 34.99,
+        "url": "https://www.microsoft.com/en-us/p/surface-mobile-mouse/8xgt2sclg6kg?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwJAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwJAAAAAAAAAA==/",
+        "_etag": "\"3700bc6e-0000-0200-0000-605ca2560000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616683606
+    },
+    {
+        "id": "8267a714500b457cb174e8a8d6875b45",
+        "title": "Sensi Touch Wi-Fi Bluetooth",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1ZfP8?ver=2b1e&q=90&m=6&h=450&w=800&b=%23FFFFFFFF&l=f&f=jpg&o=t&aim=true",
+        "company": "Emerson",
+        "category": "Thermostat",
+        "description": "The Sensi Touch Wi-Fi smart thermostat puts comfort control at your fingertips whether you are at home or on-the-go. Just a tap of the easy-to-use touchscreen display or free mobile app lets you remotely access, change or program your home temperatures – anytime.",
+        "price": 199,
+        "url": "https://www.microsoft.com/en-us/p/glas-by-johnson-controls/8qwk4sngh0zq?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwKAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwKAAAAAAAAAA==/",
+        "_etag": "\"5500d5e4-0000-0200-0000-605e1d380000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616780600
+    },
+    {
+        "id": "092ac5610b984368baca8fde77460bde",
+        "title": "Microsoft Bluetooth Keyboard",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3Cm9u?ver=80ff&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Microsoft",
+        "category": "Devices",
+        "description": "Enjoy the solid feel of our sleek, modern keyboard as you work in Windows and Office 365. Wireless design features time-saving shortcut keys and pairs with your laptop via Bluetooth.",
+        "price": 49.99,
+        "url": "https://www.microsoft.com/en-us/p/microsoft-bluetooth-keyboard/919v6qb80zg3?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwMAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwMAAAAAAAAAA==/",
+        "_etag": "\"3700bf6e-0000-0200-0000-605ca2560000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616683606
+    },
+    {
+        "id": "69cad8cd1cc34146ad36532c9b1b0f53",
+        "title": "Glass",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1ZfP8?ver=2b1e&q=90&m=6&h=450&w=800&b=%23FFFFFFFF&l=f&f=jpg&o=t&aim=true",
+        "company": "Johnson Controls",
+        "category": "Thermostatx",
+        "description": "Optimize your comfort and savings with the GLAS smart thermostat. It is bright enough to track your energy, learn your temperature preferences, and even update itself. Plus, it is easy on the eyes and the sleek design features a simple interface on a translucent OLED touchscreen.",
+        "price": 199,
+        "url": "https://www.microsoft.com/en-us/p/glas-by-johnson-controls/8qwk4sngh0zq?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwNAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwNAAAAAAAAAA==/",
+        "_etag": "\"55005c76-0000-0200-0000-605e19a20000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616779682
+    },
+    {
+        "id": "0f6d324b21754929a2a43c6cba242d3f",
+        "title": "Surface Book 2",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1FU5k?ver=e2c0&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&o=f&aim=true",
+        "company": "Microsoft",
+        "category": "Laptop",
+        "description": "Available in 13.5 inch or 15 inch PixelSense Display. High-speed Intel processors (dual-core and quad-core available). Up to 1060 NVIDIA GeForce GTX graphics ",
+        "price": 1149,
+        "url": "https://www.microsoft.com/en-us/p/surface-book-2/8mcpzjjcc98c?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "f0a3aa8f-0269-4123-950b-d2e87e782af2",
+                "type": "group"
+            },
+            {
+                "id": "e63e0c30-c44c-4a9c-a68e-e57bf830ac2b",
+                "type": "group"
+            },
+            {
+                "id": "7f6c5436-f148-4b53-8117-403e1ad6ec80",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwOAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwOAAAAAAAAAA==/",
+        "_etag": "\"3700c16e-0000-0200-0000-605ca2560000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616683606
+    },
+    {
+        "id": "3a843a2c228c4e9f8969ce32ab4e1658",
+        "title": "Ecobee SmartThermostat Smart Thermostat Voice Control",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1FU5k?ver=e2c0&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&o=f&aim=true",
+        "company": "Ecobee",
+        "category": "Thermostat",
+        "description": "Experience enhanced comfort, increased savings, and advanced control. SmartThermostat with voice control is the award-winning thermostat that learns and adapts to your routine. Included SmartSensor keeps you comfortable where you are through occupancy detection.",
+        "price": 20,
+        "url": "https://www.microsoft.com/en-us/p/surface-book-2/8mcpzjjcc98c?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": [
+            {
+                "id": "bac58813-8954-4633-9503-cc51c0ab34c9",
+                "type": "user"
+            },
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "d2235ad6-6652-4db8-b3cf-3d518b9fbfb5",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwdAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwdAAAAAAAAAA==/",
+        "_etag": "\"5500e189-0000-0200-0000-605e1a4a0000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616779850
+    },
+    {
+        "id": "2b8fabdd8d7b412caff2d33f45ecf0b5",
+        "title": "Samsung Galaxy Note 99",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE2F7a4?ver=3b77&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Samsung",
+        "category": "Phone",
+        "description": "Hello From work to your favorite cafe, Office 365 keeps you connected to what’s important friends, family, projects, and files. Access the Office apps you use and the files you need seamlessly from your desktop to your Samsung devices. ",
+        "price": 123.45,
+        "url": "https://www.microsoft.com/en-us/p/samsung-galaxy-note9/91gd63h2rtc0?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": null,
+        "_rid": "ta5nAKDymXwgAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwgAAAAAAAAAA==/",
+        "_etag": "\"56007533-0000-0200-0000-605e1fb70000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616781239
+    },
+    {
+        "id": "ae2466cf78c940e983ac8d38a4415619",
+        "title": "Fabian Book about Micro",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3zid7?ver=37e7&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Sony",
+        "category": "Laptop",
+        "description": "Slim Shady and stylish, available in 13.5 inch and new 15 inch touchscreens, rich color options, and two durable finishes. Make a powerful statement and get improved speed, performance, and all-day battery life.",
+        "price": 199,
+        "url": "https://www.microsoft.com/en-us/p/surface-laptop-3/8vfggh1r94tm?activetab=overview&cid=msft_web_collection",
+        "audience": [
+            {
+                "id": "bac58813-8954-4633-9503-cc51c0ab34c9",
+                "type": "user"
+            },
+            {
+                "id": "81d94c38-9389-4b00-8769-914130bd1909",
+                "type": "user"
+            },
+            {
+                "id": "5e2ff59c-bc04-4bbe-b046-03acd420b71a",
+                "type": "user"
+            },
+            {
+                "id": "99999",
+                "type": "group"
+            }
+        ],
+        "_rid": "ta5nAKDymXwlAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwlAAAAAAAAAA==/",
+        "_etag": "\"5600ff35-0000-0200-0000-605e1fcc0000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616781260
+    },
+    {
+        "id": "7329cfe1c9fa4b0587dffc40e8a193cd",
+        "title": "Samsung Galaxy Note 91",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE2F7a4?ver=3b77&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&f=jpg&o=f&aim=true",
+        "company": "Samsung",
+        "category": "Phone",
+        "description": "AAA",
+        "price": 123,
+        "url": "https://www.microsoft.com/en-us/p/surface-laptop-3/8vfggh1r94tm?activetab=overview&cid=msft_web_collection",
+        "audience": null,
+        "_rid": "ta5nAKDymXwsAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwsAAAAAAAAAA==/",
+        "_etag": "\"500041e2-0000-0200-0000-605df65b0000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616770651
+    },
+    {
+        "id": "cf3482490f6142479b8f256a4afe5cc3",
+        "title": "Hello",
+        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3oYj5?ver=0b43&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&o=f&aim=true",
+        "company": "blah",
+        "category": "Lapop",
+        "description": "dadasd",
+        "price": 100,
+        "url": "https://www.microsoft.com/en-us/p/surface-book-2/8mcpzjjcc98c?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
+        "audience": null,
+        "_rid": "ta5nAKDymXwtAAAAAAAAAA==",
+        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwtAAAAAAAAAA==/",
+        "_etag": "\"51000352-0000-0200-0000-605df9690000\"",
+        "_attachments": "attachments/",
+        "_ts": 1616771433
+    }
+]
