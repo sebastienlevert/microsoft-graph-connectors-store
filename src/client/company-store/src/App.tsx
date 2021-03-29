@@ -20,6 +20,7 @@ Providers.globalProvider = new TeamsProvider({
     'People.Read',
     'ExternalItem.Read.All',
     'Group.Read.All',
+    'Tasks.ReadWrite',
   ],
 });
 initializeIcons();
