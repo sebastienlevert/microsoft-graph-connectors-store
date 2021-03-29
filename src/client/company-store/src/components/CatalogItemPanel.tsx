@@ -12,11 +12,13 @@ import { Loading } from './Loading';
 import { PeoplePicker, PersonType } from '@microsoft/mgt-react';
 import { IAudienceItem } from '../models/IAudienceItem';
 import { IAudienceType } from '../models/IAudienceType';
+import { hasValue } from '../helpers/StringHelpers';
 
 const buttonStyles = { root: { marginRight: 8 } };
 
 export interface INewItemPanelProps {
   onDismiss(): void;
+  isNew: boolean;
 }
 
 export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (props: INewItemPanelProps) => {
@@ -24,6 +26,7 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
   const [catalogItems, setCatalogItems] = useRecoilState(catalogItemsState);
   //const [item, setItem] = useRecoilState(itemState);
   const item = useRecoilValue(getCatalogItem);
+  const [isValid, setIsValid] = React.useState<boolean>(false);
 
   //const initialState: ICatalogItem = props.isNew ? ({} as ICatalogItem) : props.item!;
   const [data, setData] = React.useState<ICatalogItem>({} as ICatalogItem);
@@ -35,8 +38,20 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
     });
   };
 
+  React.useEffect(() => {
+    setIsValid(
+      hasValue(data.category) &&
+        hasValue(data.company) &&
+        hasValue(data.description) &&
+        hasValue(data.price) &&
+        hasValue(data.thumbnailUrl) &&
+        hasValue(data.title) &&
+        hasValue(data.url)
+    );
+  }, [data]);
+
   React.useState(() => {
-    if (item) {
+    if (!props.isNew) {
       setData(item);
     }
   });
@@ -51,7 +66,7 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
 
   const onSave = React.useCallback(
     async (data: ICatalogItem) => {
-      if (item) {
+      if (!props.isNew) {
         const updatedItem = await updateItem(data);
         const catalogItemIndex = catalogItems.findIndex((item) => item.id === updatedItem.id);
         let tempCatalogItems = [...catalogItems];
@@ -70,13 +85,13 @@ export const CatalogItemPanel: React.FunctionComponent<INewItemPanelProps> = (pr
   const onRenderFooterContent = React.useCallback(
     () => (
       <div>
-        <PrimaryButton onClick={() => onSave(data)} styles={buttonStyles}>
-          {item ? 'Save' : 'Create'}
+        <PrimaryButton onClick={() => onSave(data)} styles={buttonStyles} disabled={!isValid}>
+          {props.isNew ? 'Save' : 'Create'}
         </PrimaryButton>
         <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
       </div>
     ),
-    [data, onDismiss, onSave, item]
+    [data, onDismiss, onSave, item, isValid]
   );
 
   return (

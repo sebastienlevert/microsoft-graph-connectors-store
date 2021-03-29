@@ -76,7 +76,7 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         name: 'Price',
         fieldName: 'price',
         minWidth: 50,
-        maxWidth: 50,
+        maxWidth: 70,
         isResizable: true,
         isCollapsible: true,
         data: 'string',
@@ -161,8 +161,12 @@ export const Catalog: React.FunctionComponent<ICatalogProps> = (props: ICatalogP
         );
 
       case 'columnPrice':
-        const priceContent = item[column?.fieldName as keyof ICatalogItem] as string;
-        return <span>{priceContent}</span>;
+        const priceContent = item[column?.fieldName as keyof ICatalogItem] as number;
+        const priceValue = priceContent.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        });
+        return <span>{priceValue}</span>;
 
       default:
         const fieldContent = item[column?.fieldName as keyof ICatalogItem] as string;
