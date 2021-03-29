@@ -8,6 +8,13 @@
       "metadata": {
         "description": "Cosmos DB account name, max length 44 characters"
       }
+    },
+    "adminGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "ID of the group which will be granted access to each item created."
+      }
     }
   },
   "variables": {
@@ -267,6 +274,10 @@
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
               "value": "[reference(concat('microsoft.insights/components/', variables('appInsights').name)).InstrumentationKey]"
+            },
+            {
+              "name": "ADMIN_GROUP_ID",
+              "value": "[parameters('adminGroupId')]"
             }
           ]
         }
