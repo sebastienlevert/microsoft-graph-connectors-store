@@ -417,21 +417,5 @@
         "_etag": "\"500041e2-0000-0200-0000-605df65b0000\"",
         "_attachments": "attachments/",
         "_ts": 1616770651
-    },
-    {
-        "id": "cf3482490f6142479b8f256a4afe5cc3",
-        "title": "Hello",
-        "thumbnailUrl": "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE3oYj5?ver=0b43&q=90&m=6&h=270&w=270&b=%23FFFFFFFF&o=f&aim=true",
-        "company": "blah",
-        "category": "Lapop",
-        "description": "dadasd",
-        "price": 100,
-        "url": "https://www.microsoft.com/en-us/p/surface-book-2/8mcpzjjcc98c?cid=msft_web_collection&activetab=pivot%3aoverviewtab",
-        "audience": null,
-        "_rid": "ta5nAKDymXwtAAAAAAAAAA==",
-        "_self": "dbs/ta5nAA==/colls/ta5nAKDymXw=/docs/ta5nAKDymXwtAAAAAAAAAA==/",
-        "_etag": "\"51000352-0000-0200-0000-605df9690000\"",
-        "_attachments": "attachments/",
-        "_ts": 1616771433
     }
 ]
