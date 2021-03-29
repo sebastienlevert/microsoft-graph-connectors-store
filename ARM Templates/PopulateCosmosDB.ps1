@@ -30,7 +30,6 @@ Function Generate-MasterKeyAuthorizationSignature{
 
     $keyBytes = [System.Convert]::FromBase64String($MasterKey)
     $sigCleartext = @($Verb.ToLower() + "`n" + $ResourceType.ToLower() + "`n" + $ResourceId + "`n" + $Date.ToString().ToLower() + "`n" + "" + "`n")
-	Write-Host "sigCleartext = " $sigCleartext
     $bytesSigClear = [Text.Encoding]::UTF8.GetBytes($sigCleartext)
     $hmacsha = new-object -TypeName System.Security.Cryptography.HMACSHA256 -ArgumentList (, $keyBytes)
     $hash = $hmacsha.ComputeHash($bytesSigClear) 
@@ -38,14 +37,13 @@ Function Generate-MasterKeyAuthorizationSignature{
     $key = [System.Web.HttpUtility]::UrlEncode('type='+$KeyType+'&ver='+$TokenVersion+'&sig=' + $signature)
     return $key
 }
-Write-Host "Here"
 
 $KeyType = "master"
 $TokenVersion = "1.0"
 $date = Get-Date
 $utcDate = $date.ToUniversalTime()
 $xDate = $utcDate.ToString('r', [System.Globalization.CultureInfo]::InvariantCulture)
-$itemId = "TestItem"
+
 $itemResourceType = "docs"
 $itemResourceId = "dbs/" + ${Env:DatabaseID} + "/colls/" + ${Env:ContainerID}
 
@@ -83,17 +81,17 @@ foreach ($item in $json)
 
     $ItemDefinition = ConvertTo-JSON $item
 
-    try {
-        Write-Host "Invoking $requestUri with {$($header | Out-String)}"
+    try
+    {
+        Write-Host "Creating item $($item.title)..." -NoNewline
         $result = Invoke-RestMethod -Uri $requestUri -Headers $header -Method $verbMethod -ContentType "application/json" -Body $ItemDefinition
-        Write-Host "create item response = "$result
-        return "CreateItemSuccess";
+        Write-Host "Done"
     }
     catch {
         # Dig into the exception to get the Response details.
         # Note that value__ is not a typo.
         Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__ 
         Write-Host "Exception Message:" $_.Exception.Message
-        echo $_.Exception|format-list -force
     }
 }
+return
