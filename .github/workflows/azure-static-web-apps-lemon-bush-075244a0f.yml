@@ -34,6 +34,7 @@ jobs:
         env:
           REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
           REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
+          REACT_APP_EXTERNAL_CONNECTION_ID: ${{ secrets.REACT_APP_EXTERNAL_CONNECTION_ID }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
