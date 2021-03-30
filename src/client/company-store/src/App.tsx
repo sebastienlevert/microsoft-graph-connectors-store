@@ -4,7 +4,7 @@ import { initializeIcons } from '@uifabric/icons';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { catalogItemsState, getCatalogItems } from './state/catalogItemsState';
 import { externalItemsState, getExternalItemsTest } from './state/externalItemsState';
-import { AdminPage } from './pages/AdminPage';
+import { CatalogPage } from './pages/CatalogPage';
 import { TeamsProvider } from '@microsoft/mgt-teams-provider';
 import { Providers } from '@microsoft/mgt-element';
 import * as microsoftTeams from '@microsoft/teams-js';
@@ -36,9 +36,5 @@ export const App: React.FunctionComponent = () => {
     setExternalItems(externalItems);
   });
 
-  return (
-    <>
-      <AdminPage></AdminPage>
-    </>
-  );
+  return <CatalogPage></CatalogPage>;
 };
