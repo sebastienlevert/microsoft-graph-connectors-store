@@ -1,0 +1,15 @@
+[
+  {
+    "resource": "Microsoft Graph",
+    "delegated": [
+      "User.Read",
+      "User.ReadBasic.All",
+      "User.Read.All",
+      "People.Read",
+      "ExternalItem.Read.All",
+      "Group.Read.All",
+      "Tasks.ReadWrite"
+    ],
+    "application": []
+  }
+]

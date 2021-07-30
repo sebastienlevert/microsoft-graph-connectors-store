@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.9/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.9",
+  "version": "1.0.0",
+  "id": "{appid}",
+  "packageName": "com.microsoft.teams.contoso.companystore",
+  "developer": {
+    "name": "Contoso",
+    "websiteUrl": "{baseUrl}",
+    "privacyUrl": "{baseUrl}/index.html#/privacy",
+    "termsOfUseUrl": "{baseUrl}/index.html#/termsofuse"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "Company Store",
+    "full": "Company Store for Microsoft Teams"
+  },
+  "description": {
+    "short": "Company Store for Microsoft Teams",
+    "full": "Company Store for Microsoft Teams"
+  },
+  "accentColor": "#FFFFFF",
+  "bots": [],
+  "composeExtensions": [],
+  "configurableTabs": [],
+  "staticTabs": [
+    {
+      "entityId": "index",
+      "name": "Company Store",
+      "contentUrl": "{baseUrl}/index.html#/tab",
+      "websiteUrl": "{baseUrl}/index.html#/tab",
+      "scopes": ["personal"]
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": [],
+  "webApplicationInfo": {
+    "id": "{appClientId}",
+    "resource": "{webApplicationInfoResource}"
+  }
+}
